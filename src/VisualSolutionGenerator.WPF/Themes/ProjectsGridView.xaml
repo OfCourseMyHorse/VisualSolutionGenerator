@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="VisualSolutionGenerator.Themes.ProjectsGridView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VisualSolutionGenerator.Themes"
+             mc:Ignorable="d" >
+    
+    <!-- Should bind to a collection of ProjectInfo.View objects-->
+    
+    <DataGrid ItemsSource="{Binding}" AutoGenerateColumns="False" AlternatingRowBackground="AliceBlue" GridLinesVisibility="Vertical" IsReadOnly="True">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Project ID" Binding="{Binding ProjectId}" />
+            <DataGridHyperlinkColumn Header="Physical Directory" Binding="{Binding FileDirectory}">
+                <DataGridHyperlinkColumn.ElementStyle>
+                    <Style>
+                        <EventSetter Event="Hyperlink.Click" Handler="_Hyperlink_Click"/>
+                    </Style>
+                </DataGridHyperlinkColumn.ElementStyle>
+            </DataGridHyperlinkColumn>
+
+            <DataGridTextColumn Header="Virtual&#x0a;Directory" Binding="{Binding Solution.VirtualFolderPath}" />
+
+            <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" />
+            <DataGridTextColumn Header="Tools&#x0a;Version" Binding="{Binding ToolsVersion}" />
+
+            <DataGridTextColumn Header="Frameworks" Binding="{Binding TargetFrameworks}" />
+
+            <DataGridTextColumn Header="Types" Binding="{Binding ProjectTypes}" />
+            <DataGridTextColumn Header="Executable" Binding="{Binding AssemblyType}" />
+            <DataGridTextColumn Header="Assembly Name" Binding="{Binding AssemblyName}" />
+        </DataGrid.Columns>
+
+    </DataGrid>
+    
+</UserControl>
