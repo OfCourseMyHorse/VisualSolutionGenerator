@@ -275,7 +275,7 @@ namespace VisualSolutionGenerator
 
         public System.Xml.Linq.XDocument    FileContent     => System.Xml.Linq.XDocument.Load(this.FilePath);
 
-        public IEnumerable<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile");
+        public IEnumerable<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile").ToArray();
 
         public IEnumerable<Tuple<string,string,string>> ItemsPackages
         {

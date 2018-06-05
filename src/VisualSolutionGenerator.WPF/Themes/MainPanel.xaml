@@ -49,15 +49,15 @@
                                 </GroupBox>
 
                                 <GroupBox Header="References" Background="#20000000" Margin="4">
-                                    <ListBox ItemsSource="{Binding ProjectReferences}" DisplayMemberPath="FileName" />
+                                    <ListBox ItemsSource="{Binding ProjectReferences}" DisplayMemberPath="AssemblyName" />
                                 </GroupBox>
 
                                 <GroupBox Header="Referenced By" Background="#20000000" Margin="4">
-                                    <ListBox ItemsSource="{Binding ReferencedByProjects}" DisplayMemberPath="FileName" />
+                                    <ListBox ItemsSource="{Binding ReferencedByProjects}" DisplayMemberPath="AssemblyName" />
                                 </GroupBox>
 
                                 <GroupBox Header="Compilable items" Background="#20000000" Margin="4">
-                                    <ItemsControl ItemsSource="{Binding ItemsToCompile}" />
+                                    <ItemsControl ItemsSource="{Binding ItemsToCompile}" DisplayMemberPath="FileName" />
                                 </GroupBox>
 
                                 <GroupBox Header="Nuget Packages" Background="#20000000" Margin="4">

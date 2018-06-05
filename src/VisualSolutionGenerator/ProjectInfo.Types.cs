@@ -90,6 +90,13 @@ namespace VisualSolutionGenerator
 
         #endregion
 
+        #region unknown
+
+        public static readonly Guid Xamarin_Unknown1 = Guid.Parse("{10368E6C-D01B-4462-8E8B-01FC667A7035}");
+        
+
+        #endregion
+
         #region API
 
         public static bool IsTargetPlatform(this Guid id)
@@ -159,7 +166,9 @@ namespace VisualSolutionGenerator
             dict.Add(ASPNET_MVC5, "ASP.NET MVC 5");
 
             dict.Add(IOS_OBSOLETE, "Xamarin.iOS(Obsolete)");
-            dict.Add(IOS, "Xamarin.iOS");            
+            dict.Add(IOS, "Xamarin.iOS");
+
+            dict.Add(Xamarin_Unknown1, "Xamarin.???");
 
             _Dictionary = dict;
             return dict;

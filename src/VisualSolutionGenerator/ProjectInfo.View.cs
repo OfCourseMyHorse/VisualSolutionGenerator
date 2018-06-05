@@ -82,7 +82,8 @@ namespace VisualSolutionGenerator
                 {
                     return _Collection
                         .ProjectFiles
-                        .Where(prj => prj._ResolvedProjectReferences.Contains(prj));
+                        .Where(prj => prj._ResolvedProjectReferences.Contains(prj))
+                        .ToArray();
                 }
             }
 
