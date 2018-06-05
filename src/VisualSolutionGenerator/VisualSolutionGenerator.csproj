@@ -1,11 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>net47</TargetFramework>
   </PropertyGroup>
+  
+  <!-- https://github.com/dotnet/docfx/issues/512 -->
+  
+  <!-- https://github.com/dotnet/sdk/issues/2203 -->
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="15.1.1012" />
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.Build" Version="15.7.179" />    
   </ItemGroup>
 
 </Project>

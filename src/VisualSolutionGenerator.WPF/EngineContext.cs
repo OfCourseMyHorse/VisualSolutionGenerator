@@ -6,9 +6,6 @@ using System.Text;
           
 namespace VisualSolutionGenerator
 {
-
-    
-
     sealed class EngineContext : BindableBase
     {
         #region data
@@ -109,17 +106,26 @@ namespace VisualSolutionGenerator
 
         public void AddDirectoryTree(string directoryPath, IEnumerable<string> excludePrjs, IEnumerable<string> excludeDirs)
         {
-            if (string.IsNullOrWhiteSpace(SolutionPath))
+            try
             {
-                var dir = System.IO.Path.Combine(directoryPath, "GlobalView.tmp");
-                SolutionPath = System.IO.Path.ChangeExtension(dir, ".Generated.sln");
+
+                if (string.IsNullOrWhiteSpace(SolutionPath))
+                {
+                    var dir = System.IO.Path.Combine(directoryPath, "GlobalView.tmp");
+                    SolutionPath = System.IO.Path.ChangeExtension(dir, ".Generated.sln");
+                }
+
+                if (_Projects == null) _Projects = new FileBaseInfo.Collection(new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(SolutionPath)));
+
+
+                _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
+
+                RaiseChanged(nameof(Projects), nameof(ProjectPackageConfigs), nameof(FailedFiles));
             }
-
-            if (_Projects == null) _Projects = new FileBaseInfo.Collection( new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(SolutionPath)));
-
-            _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
-
-            RaiseChanged(nameof(Projects), nameof(ProjectPackageConfigs), nameof(FailedFiles));
+            catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         public void GenerateSolution()

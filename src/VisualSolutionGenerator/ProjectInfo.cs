@@ -45,19 +45,20 @@ using System.Text;
 using System.Reflection;
 using System.Linq;
 
+// this represents the source code DOM of the project file
+using MSSRCPROJECT = Microsoft.Build.Construction.ProjectRootElement;
+
+// this represents the evaluated data of the project file
+using MSEVLPROJECT = Microsoft.Build.Evaluation.Project;
+
+// this represent a project ready to build
+using MSEXEPROJECT = Microsoft.Build.Execution.ProjectInstance;
 
 
 namespace VisualSolutionGenerator
 {
-    // this represents the source code DOM of the project file
-    using MSSRCPROJECT = Microsoft.Build.Construction.ProjectRootElement;
-
-    // this represents the evaluated data of the project file
-    using MSEVLPROJECT = Microsoft.Build.Evaluation.Project;
-
-    // this represent a project ready to build
-    using MSEXEPROJECT = Microsoft.Build.Execution.ProjectInstance;   
-
+    [Flags]
+    public enum AssemblyType { None = 0, Library = 1, Exe = 2, AppContainer = 4, Win = 8 }
 
     public sealed class SolutionGenerationHints
     {
@@ -102,12 +103,7 @@ namespace VisualSolutionGenerator
         #endregion
     }
 
-
-    [Flags]
-    public enum AssemblyType { None = 0, Library =1, Exe = 2, AppContainer = 4, Win = 8 }
-
-
-    
+    [System.Diagnostics.DebuggerDisplay("{_Path}")]
     public sealed class ProjectReference : IEquatable<ProjectReference>
     {
         #region lifecycle
@@ -149,15 +145,12 @@ namespace VisualSolutionGenerator
         public static bool operator !=(ProjectReference a, ProjectReference b) => !Equals(a, b);
 
         #endregion
-    }
-    
+    }    
 
     [System.Diagnostics.DebuggerDisplay("{FilePath}")]
     public partial class ProjectInfo : FileBaseInfo
-        {
-
+    {
         #region Constants
-
         
         private const string CSPROJCUSTOMPROP_CATEGORIES = "SlnGenCategories";
 
@@ -310,12 +303,7 @@ namespace VisualSolutionGenerator
 
         #endregion        
     }
-
-
-       
-
-
-
+    
     [System.Diagnostics.DebuggerDisplay("{FilePath}")]
     public sealed class ProjectAnalisys : BindableBase
     {

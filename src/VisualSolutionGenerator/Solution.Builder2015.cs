@@ -9,9 +9,7 @@ namespace VisualSolutionGenerator
 {
     public static class SolutionBuilder2015
     {
-        #region API
-
-        
+        #region API        
         
 
         public static void WriteSolutionFile(string solutionFile, FileBaseInfo.Collection context)
@@ -132,10 +130,5 @@ namespace VisualSolutionGenerator
         }
 
         #endregion
-    }
-
-
-
-
-    
+    }    
 }

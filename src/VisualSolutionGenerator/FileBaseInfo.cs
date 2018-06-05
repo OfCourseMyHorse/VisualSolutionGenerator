@@ -114,8 +114,23 @@ namespace VisualSolutionGenerator
         public Exception Exception => _Exception;
 
         public String ExceptionName => _Exception.GetType().Name;
-        public String ErrorMessage => _Exception.Message;
+        public String ErrorMessage => _GetExMessage(_Exception);
 
         #endregion
+
+        private static string _GetExMessage(Exception ex)
+        {
+            var msg = string.Empty;
+
+            while(ex != null)
+            {
+                if (!string.IsNullOrWhiteSpace(msg)) msg += "\r\n";
+
+                msg += ex.Message;
+                ex = ex.InnerException;
+            }
+
+            return msg;
+        }
     }
 }
