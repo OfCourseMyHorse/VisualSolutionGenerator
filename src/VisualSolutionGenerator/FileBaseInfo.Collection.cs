@@ -142,7 +142,57 @@ namespace VisualSolutionGenerator
                 }
             }
 
-            #endregion            
+            #endregion
+
+            #region export DGML
+
+            public OpenSoftware.DgmlTools.Model.DirectedGraph ToDGML()
+            {
+                var linkPairs = ProjectFiles
+                    .SelectMany(item => item.TransitiveProjectReferences.Select(iref => new KeyValuePair<ProjectInfo, FileBaseInfo>(item, iref)))
+                    .Cast<Object>()
+                    .ToList();
+
+                var prjBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<ProjectInfo>
+                    (
+                    x => new OpenSoftware.DgmlTools.Model.Node
+                    {
+                        Id = x.FilePath,
+                        Label = x.AssemblyName,
+                        Category = "PROJECT"
+                    }
+                    );
+
+                var errBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<FileErrorInfo>
+                    (
+                    x => new OpenSoftware.DgmlTools.Model.Node
+                    {
+                        Id = x.FilePath,
+                        Label = x.FileName,
+                        Category = "PROJECT"
+                    }
+                    );
+
+                var linkBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<KeyValuePair<ProjectInfo, FileBaseInfo>>
+                    (
+                    x => new OpenSoftware.DgmlTools.Model.Link
+                    {
+                        Source = x.Key.FilePath,
+                        Target = x.Value.FilePath
+                    });
+
+                var builder = new OpenSoftware.DgmlTools.DgmlBuilder(new OpenSoftware.DgmlTools.Analyses.HubNodeAnalysis())
+                {
+                    NodeBuilders = new OpenSoftware.DgmlTools.Builders.NodeBuilder[] { prjBuilder,errBuilder },
+                    LinkBuilders = new OpenSoftware.DgmlTools.Builders.LinkBuilder[] { linkBuilder },
+                    CategoryBuilders = new OpenSoftware.DgmlTools.Builders.CategoryBuilder[] { },
+                    StyleBuilders = new OpenSoftware.DgmlTools.Builders.StyleBuilder[] { }
+                };
+
+                return builder.Build(_Files, linkPairs);
+            }
+
+            #endregion
         }
     }
 }

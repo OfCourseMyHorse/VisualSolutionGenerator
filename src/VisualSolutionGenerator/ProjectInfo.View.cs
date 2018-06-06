@@ -71,7 +71,22 @@ namespace VisualSolutionGenerator
             /// <summary>
             /// Outgoing Project References
             /// </summary>
-            public IEnumerable<ProjectInfo> ProjectReferences =>  _ResolvedProjectReferences.OfType<ProjectInfo>();
+            public IEnumerable<ProjectInfo> ProjectReferences =>  _ResolvedProjectReferences.OfType<ProjectInfo>().ToList();
+
+            public IEnumerable<ProjectInfo> TransitiveProjectReferences
+            {
+                get
+                {
+                    var references = _ResolvedProjectReferences
+                        .OfType<ProjectInfo>()
+                        .Select(item => item.CreateView(_Collection))
+                        .ToList();
+
+                    _TransitiveReduction(references);
+
+                    return references;
+                }
+            }
 
             /// <summary>
             /// Incoming Project References
@@ -84,6 +99,18 @@ namespace VisualSolutionGenerator
                         .ProjectFiles
                         .Where(prj => prj._ResolvedProjectReferences.Contains(this))
                         .ToList();
+                }
+            }
+
+            #endregion
+
+            #region API
+
+            private static void _TransitiveReduction(IList<View> references)
+            {
+                foreach(var r in references.ToArray())
+                {
+                    if (references.Any(item => item.ProjectReferences.Contains(r))) references.Remove(r);
                 }
             }
 

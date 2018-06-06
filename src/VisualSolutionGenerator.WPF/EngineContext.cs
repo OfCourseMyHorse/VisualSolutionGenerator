@@ -92,6 +92,17 @@ namespace VisualSolutionGenerator
            SolutionBuilder2017.WriteSolutionFile(SolutionPath, _Projects);
         }
 
+        public void GenerateDgml(string filePath)
+        {
+            var dgml = _Projects.ToDGML();
+
+            using (var writer = new System.IO.StreamWriter(filePath))
+            {
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(OpenSoftware.DgmlTools.Model.DirectedGraph));
+                serializer.Serialize(writer, dgml);
+            }
+        }
+
         #endregion
     }
 }

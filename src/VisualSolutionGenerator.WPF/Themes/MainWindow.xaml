@@ -13,6 +13,7 @@
                 <MenuItem Header="Include Single Project" Command="{Binding IncludeSingleProjectCmd}" />
                 <MenuItem Header="Include Directory Tree" Command="{Binding IncludeDirectoryTreeCmd}" />
                 <MenuItem Header="Save Solution" Command="{Binding GenerateCmd}" />
+                <MenuItem Header="Save DGML Graph" Command="{Binding SaveDgmlCmd}" />
             </MenuItem>
         </Menu>
 

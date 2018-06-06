@@ -70,6 +70,8 @@ namespace VisualSolutionGenerator
 
             GenerateCmd = new RelayCommand(_Engine.GenerateSolution);
 
+            SaveDgmlCmd = new RelayCommand(_SaveDgmlFile);
+
             _Engine.ProcessCommandLine(CommandLineParser.Default);
         }
 
@@ -91,6 +93,8 @@ namespace VisualSolutionGenerator
 
         public ICommand GenerateCmd { get; private set; }
 
+        public ICommand SaveDgmlCmd { get; private set; }
+
         #endregion
 
         #region API
@@ -110,9 +114,11 @@ namespace VisualSolutionGenerator
 
         private void _SelectSingleProjectPath()
         {
-            var dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.RestoreDirectory = true;
-            dlg.Filter = "Visual Studio Project|*.csproj;*.shproj";
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "Visual Studio Project|*.csproj;*.shproj"
+            };
 
             var defpath = _Engine.SolutionPath;
             if (!string.IsNullOrWhiteSpace(defpath))
@@ -128,17 +134,34 @@ namespace VisualSolutionGenerator
 
         private void _SetTargetSolutionPath()
         {
-            var dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.RestoreDirectory = true;
-            dlg.Filter = "Visual Studio Solution|*.sln";
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "Visual Studio Solution|*.sln",
 
-            dlg.FileName = _Engine.SolutionPath;
+                FileName = _Engine.SolutionPath
+            };
 
             if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;
 
             _Engine.SolutionPath = dlg.FileName;
 
             _Engine.GenerateSolution();
+        }
+
+        private void _SaveDgmlFile()
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "Directed Graph|*.dgml",
+
+                FileName = System.IO.Path.ChangeExtension(_Engine.SolutionPath, ".dgml")
+            };
+
+            if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;            
+
+            _Engine.GenerateDgml(dlg.FileName);
         }
 
         #endregion
