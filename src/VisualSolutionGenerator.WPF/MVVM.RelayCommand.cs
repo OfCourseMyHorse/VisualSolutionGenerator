@@ -48,15 +48,13 @@ namespace VisualSolutionGenerator
             _canExecute = () => cmd.CanExecute(null) && Convert.ToBoolean(prop.GetValue(canExecuteSource));
             cmd.CanExecuteChanged += (s, ev) =>
                 {
-                    var handler = _CanExecuteChanged;
-                    if (handler != null) handler(this, EventArgs.Empty);
+                    _CanExecuteChanged?.Invoke(this, EventArgs.Empty);
                 };
             canExecuteSource.PropertyChanged += (s, ev) =>
                 {
                     if (ev.PropertyName == canExecuteProperty || string.IsNullOrEmpty(ev.PropertyName))
                     {
-                        var handler = _CanExecuteChanged;
-                        if (handler != null) handler(this, EventArgs.Empty);
+                        _CanExecuteChanged?.Invoke(this, EventArgs.Empty);
                     }
                 };
             _UseOwnEventHandler = true;
@@ -115,7 +113,7 @@ namespace VisualSolutionGenerator
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null) throw new ArgumentNullException("execute"); _execute = execute; _canExecute = canExecute;
+            _execute = execute ?? throw new ArgumentNullException("execute"); _canExecute = canExecute;
             _UseOwnEventHandler = false;
         }
 
@@ -204,11 +202,8 @@ namespace VisualSolutionGenerator
 
         public DelegatedCommand(Action<ICommand, object> action, ICommand baseCommand)
         {
-            if (action == null) throw new ArgumentNullException("action");
-            if (baseCommand == null) throw new ArgumentNullException("baseCommand");
-
-            _Action = action;
-            _BaseCommand = baseCommand;
+            _Action = action ?? throw new ArgumentNullException("action");
+            _BaseCommand = baseCommand ?? throw new ArgumentNullException("baseCommand");
         }
 
         private readonly Action<ICommand, object> _Action;
@@ -239,9 +234,7 @@ namespace VisualSolutionGenerator
     {
         public DelegateOrNopCommand(ICommand delegatedCommand)
         {
-            if (delegatedCommand == null) throw new ArgumentNullException(nameof(delegatedCommand));
-
-            _DelegatedCommand = delegatedCommand;
+            _DelegatedCommand = delegatedCommand ?? throw new ArgumentNullException(nameof(delegatedCommand));
         }
 
         #region Data

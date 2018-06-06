@@ -341,7 +341,7 @@ namespace VisualSolutionGenerator
             #region data
 
             private Microsoft.Win32.RegistryKey _BaseKey;
-            private bool _AllUsers;
+            private readonly bool _AllUsers;
 
             #endregion
 
