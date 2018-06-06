@@ -148,10 +148,38 @@ namespace VisualSolutionGenerator
 
             public OpenSoftware.DgmlTools.Model.DirectedGraph ToDGML()
             {
-                var linkPairs = ProjectFiles
+                // https://github.com/merijndejonge/DgmlBuilder        
+
+                var projects = ProjectFiles.Where(item => item != null).ToList();
+
+                var linkPairs = projects
                     .SelectMany(item => item.TransitiveProjectReferences.Select(iref => new KeyValuePair<ProjectInfo, FileBaseInfo>(item, iref)))
                     .Cast<Object>()
                     .ToList();
+
+                var groups = projects
+                    .Select(item => item.Solution.VirtualFolderPath)
+                    .Distinct()
+                    .ToList();
+
+                var groupBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<String>
+                    (
+                    x => new OpenSoftware.DgmlTools.Model.Node
+                    {
+                        Id = x,
+                        Label = x,
+                        Group = "Expanded"
+                    }
+                    );
+
+                var groupItemBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<ProjectInfo>
+                    (
+                    x => new OpenSoftware.DgmlTools.Model.Link
+                    {
+                        Category = "Contains",
+                        Source = x.Solution.VirtualFolderPath,
+                        Target = x.FilePath                        
+                    });
 
                 var prjBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<ProjectInfo>
                     (
@@ -159,7 +187,7 @@ namespace VisualSolutionGenerator
                     {
                         Id = x.FilePath,
                         Label = x.AssemblyName,
-                        Category = "PROJECT"
+                        Reference = x.FilePath
                     }
                     );
 
@@ -169,7 +197,7 @@ namespace VisualSolutionGenerator
                     {
                         Id = x.FilePath,
                         Label = x.FileName,
-                        Category = "PROJECT"
+                        Reference = x.FilePath
                     }
                     );
 
@@ -177,19 +205,19 @@ namespace VisualSolutionGenerator
                     (
                     x => new OpenSoftware.DgmlTools.Model.Link
                     {
-                        Source = x.Key.FilePath,
-                        Target = x.Value.FilePath
+                        Target = x.Key.FilePath,
+                        Source = x.Value.FilePath
                     });
 
-                var builder = new OpenSoftware.DgmlTools.DgmlBuilder(new OpenSoftware.DgmlTools.Analyses.HubNodeAnalysis())
+                var builder = new OpenSoftware.DgmlTools.DgmlBuilder
                 {
-                    NodeBuilders = new OpenSoftware.DgmlTools.Builders.NodeBuilder[] { prjBuilder,errBuilder },
-                    LinkBuilders = new OpenSoftware.DgmlTools.Builders.LinkBuilder[] { linkBuilder },
+                    NodeBuilders = new OpenSoftware.DgmlTools.Builders.NodeBuilder[] { prjBuilder,errBuilder , groupBuilder },
+                    LinkBuilders = new OpenSoftware.DgmlTools.Builders.LinkBuilder[] { linkBuilder, groupItemBuilder },
                     CategoryBuilders = new OpenSoftware.DgmlTools.Builders.CategoryBuilder[] { },
                     StyleBuilders = new OpenSoftware.DgmlTools.Builders.StyleBuilder[] { }
                 };
 
-                return builder.Build(_Files, linkPairs);
+                return builder.Build(groups, projects, linkPairs);
             }
 
             #endregion
