@@ -40,9 +40,9 @@ namespace VisualSolutionGenerator
 
             #region properties
 
-            public IEnumerable<ProjectInfo.View> ProjectFiles { get { return _Files.OfType<ProjectInfo>().Select(item => item.CreateView(this)); } }
+            public IEnumerable<ProjectInfo.View> ProjectFiles => _Files.OfType<ProjectInfo>().Select(item => item.CreateView(this)).ToList();
 
-            public IEnumerable<FileErrorInfo> FailedFiles { get { return _Files.OfType<FileErrorInfo>(); } }
+            public IEnumerable<FileErrorInfo> FailedFiles => _Files.OfType<FileErrorInfo>().ToList();
 
             #endregion
 
@@ -59,7 +59,7 @@ namespace VisualSolutionGenerator
 
             internal Guid _GetDeferredProjectId(string fullPath)
             {
-                Guid id; return _ProjectGuids.TryGetValue(fullPath, out id) ? id : Guid.Empty;
+                return _ProjectGuids.TryGetValue(fullPath, out Guid id) ? id : Guid.Empty;
             }
 
             public ProjectInfo GetByGuid(Guid pid)
@@ -112,7 +112,8 @@ namespace VisualSolutionGenerator
             public void ProbeFolder(string folder, IEnumerable<string> excludeProjs, IEnumerable<string> excludeDirs, bool recursive = false)
             {
                 var xfolder = new System.IO.DirectoryInfo(folder);                
-                var xexcludeDirs = excludeDirs == null ? null : excludeDirs
+
+                var xexcludeDirs = excludeDirs?
                     .Select(d => new System.IO.DirectoryInfo(d))
                     .Where(d => d.Exists)
                     .ToArray();

@@ -71,8 +71,10 @@ namespace VisualSolutionGenerator
             var f = _Children.FirstOrDefault(item => item.Name == aliasFolder);
             if (f != null) return f;
 
-            f = new _SolutionVirtualFolder(aliasFolder);
-            f.Parent = this;
+            f = new _SolutionVirtualFolder(aliasFolder)
+            {
+                Parent = this
+            };
 
             _Children.Add(f);
 

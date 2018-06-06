@@ -54,9 +54,11 @@ namespace VisualSolutionGenerator
 
         public static bool Equals(FileBaseInfo a, FileBaseInfo b)
         {
+            #pragma warning disable IDE0041 // Use 'is null' check
             if (Object.ReferenceEquals(a, b)) return true;
             if (Object.ReferenceEquals(a, null)) return false;
             if (Object.ReferenceEquals(b, null)) return false;
+            #pragma warning restore IDE0041 // Use 'is null' check
 
             return String.Equals(a.FilePath, b.FilePath, StringComparison.OrdinalIgnoreCase);
         }

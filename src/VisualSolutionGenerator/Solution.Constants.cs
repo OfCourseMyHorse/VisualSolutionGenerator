@@ -15,12 +15,14 @@ namespace VisualSolutionGenerator
 
         static SolutionConstants()
         {
-            _ProjGUIDs = new Dictionary<string, Guid>();
-            _ProjGUIDs["ccproj"] = new Guid("cc5fd16d-436d-48ad-a40c-5a424c6e3e79");
-            _ProjGUIDs["csproj"] = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC");
-            _ProjGUIDs["dbproj"] = new Guid("006AC3C3-E446-4C8A-B35F-CBA0E2238D60");
-            _ProjGUIDs["vbproj"] = new Guid("F184B08F-C81C-45f6-A57F-5ABD9991F28F");
-            _ProjGUIDs["shproj"] = new Guid("D954291E-2A0B-460D-934E-DC6B0785DB48");
+            _ProjGUIDs = new Dictionary<string, Guid>
+            {
+                ["ccproj"] = new Guid("cc5fd16d-436d-48ad-a40c-5a424c6e3e79"),
+                ["csproj"] = new Guid("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"),
+                ["dbproj"] = new Guid("006AC3C3-E446-4C8A-B35F-CBA0E2238D60"),
+                ["vbproj"] = new Guid("F184B08F-C81C-45f6-A57F-5ABD9991F28F"),
+                ["shproj"] = new Guid("D954291E-2A0B-460D-934E-DC6B0785DB48")
+            };
         }
 
         #endregion
@@ -31,11 +33,8 @@ namespace VisualSolutionGenerator
         {
             extension = extension.ToLower().Trim().TrimStart('.');
 
-            Guid projTypeGuid;
-            return _ProjGUIDs.TryGetValue(extension, out projTypeGuid) ? projTypeGuid : Guid.Empty;
-        }
-
-        
+            return _ProjGUIDs.TryGetValue(extension, out Guid projTypeGuid) ? projTypeGuid : Guid.Empty;
+        }        
 
         #endregion
     }

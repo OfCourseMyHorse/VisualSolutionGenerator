@@ -85,8 +85,10 @@ namespace VisualSolutionGenerator
             var hintFromProjectProperty = pinfo.MsProject.GetVirtualFolderHint();
             if (!string.IsNullOrWhiteSpace(hintFromProjectProperty)) { vdir = hintFromProjectProperty; }
 
-            var sd = new SolutionGenerationHints();
-            sd.VirtualFolderPath = vdir;
+            var sd = new SolutionGenerationHints
+            {
+                VirtualFolderPath = vdir
+            };
 
             return sd;
         }
@@ -128,9 +130,11 @@ namespace VisualSolutionGenerator
 
         public static bool Equals(ProjectReference a, ProjectReference b)
         {
+            #pragma warning disable IDE0041 // Use 'is null' check
             if (object.ReferenceEquals(a, b)) return true;
             if (object.ReferenceEquals(a, null)) return false;
             if (object.ReferenceEquals(b, null)) return false;
+            #pragma warning restore IDE0041 // Use 'is null' check
 
             if (a._Id != Guid.Empty && b._Id != Guid.Empty) return a._Id == b._Id;
 
@@ -156,7 +160,7 @@ namespace VisualSolutionGenerator
 
         protected const string ProjectRefs = ".projRefs";
         protected const string AssemblyRefs = ".dllRefs";
-        public const string ProjFileExtension = ".*proj"; // shproj csproj cxxproj  targets projitems
+        public    const string ProjFileExtension = ".*proj"; // shproj csproj cxxproj  targets projitems
         protected const string SolutionFileExtension = ".sln";
         protected const string AllProjectsSolutionFileName = "all";
 
@@ -166,6 +170,7 @@ namespace VisualSolutionGenerator
         protected const string ALLSLNS = "*.sln";
         protected const string REFERENCE = "Reference";
         protected const string PROJECTREFERENCE = "ProjectReference";
+        protected const string PACKAGEREFERENCE = "PackageReference";
         protected const string PROJECT = "Project";
         protected const string Obj = @"\obj\";
 
@@ -175,7 +180,7 @@ namespace VisualSolutionGenerator
 
         internal ProjectInfo(MSEVLPROJECT prj)
         {
-            _Project = prj;
+            _Project = prj;            
         }
 
         public override FileBaseInfo Clone() { return new ProjectInfo(this); }
@@ -197,7 +202,7 @@ namespace VisualSolutionGenerator
         /// While we load the references, we "connect" the projects
         /// </remarks>
         /// <param name="evalRefFunc"></param>
-        internal void _EvaluateReferences( Func<System.IO.FileInfo, Guid, ProjectInfo> evalRefFunc )
+        internal void _EvaluateReferences( Func<FileInfo, Guid, ProjectInfo> evalRefFunc )
         {
             foreach (var buildItem in this._Project.AllEvaluatedItems)
             {
@@ -249,67 +254,39 @@ namespace VisualSolutionGenerator
 
         #region properties - project core                
 
-        public String AssemblyName      =>  _Project.GetPropertyValue("AssemblyName");
-        public String OutputType        =>  _Project.GetPropertyValue("OutputType");
+        public String       AssemblyName    =>  _Project.GetPropertyValue("AssemblyName");
+        public AssemblyType AssemblyType    => _Project.GetAssemblyType();
+
+        public String OutputType            =>  _Project.GetPropertyValue("OutputType");
         
-        public Boolean IsApplication    => AssemblyType != AssemblyType.None;
+        public Boolean IsApplication        => AssemblyType != AssemblyType.None;
 
-        public String TargetFrameworks  => String.Join(" ", _Project.GetTargetFrameworkMonikers());
+        public String TargetFrameworks      => String.Join(" ", _Project.GetTargetFrameworkMonikers());
 
-        public AssemblyType AssemblyType => _Project.GetAssemblyType();
+        public IEnumerable<String> PackageReferences => this._Project.AllEvaluatedItems.Where(item => item.ItemType == PACKAGEREFERENCE).Select(item => item.EvaluatedInclude).ToList();
 
-        #endregion
-
-        #region properties - references
-
-        public IEnumerable<string> EvaluatedAssemblyReferences => _Project.GetAssembliesReferencesRelativePaths();
-
-        #endregion
+        #endregion        
 
         #region extras        
 
         // hints for solution generation (move to view)
         public SolutionGenerationHints      Solution        => _SolutionView;
 
-        public ProjectAnalisys              Analisys        => new ProjectAnalisys(_Project);
+        public ProjectAnalysis              Analysis        => new ProjectAnalysis(_Project);
 
         public System.Xml.Linq.XDocument    FileContent     => System.Xml.Linq.XDocument.Load(this.FilePath);
 
-        public IEnumerable<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile").ToArray();
-
-        public IEnumerable<Tuple<string,string,string>> ItemsPackages
-        {
-            // common package folder for many solutions
-            // http://stackoverflow.com/questions/18376313/setting-up-a-common-nuget-packages-folder-for-all-solutions-when-some-projects-a
-
-            get
-            {
-                var packageItem = _Project
-                    .GetItems("None")
-                    .FirstOrDefault(item => item.EvaluatedInclude.ToLower().Contains("packages.config"));
-
-                var path = System.IO.Path.Combine(FileDirectory, "packages.config");
-
-                if (!System.IO.File.Exists(path)) return Enumerable.Empty<Tuple<string, string, string>>();
-
-                var doc = System.Xml.Linq.XDocument.Load(path);
-
-                return doc
-                    .Element("packages")
-                    .Elements("package")
-                    .Select(item => new Tuple<string, string, string>( item.Attribute("id").Value, item.Attribute("version").Value,item.Attribute("targetFramework").Value) );
-            }
-        }
+        public IEnumerable<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile").ToList();        
 
         #endregion        
     }
     
     [System.Diagnostics.DebuggerDisplay("{FilePath}")]
-    public sealed class ProjectAnalisys : BindableBase
+    public sealed class ProjectAnalysis : BindableBase
     {
         #region lifecycle
 
-        internal ProjectAnalisys(MSEVLPROJECT prj) { _Project = prj; }
+        internal ProjectAnalysis(MSEVLPROJECT prj) { _Project = prj; }
 
         #endregion
 
@@ -365,7 +342,9 @@ namespace VisualSolutionGenerator
         {
             get
             {
-                return _Project.AllEvaluatedItems.Select(item => new KeyValuePair<string, string>(item.ItemType, item.EvaluatedInclude));
+                return _Project
+                    .AllEvaluatedItems
+                    .Select(item => new KeyValuePair<string, string>(item.ItemType, item.EvaluatedInclude));
             }
         }
 

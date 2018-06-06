@@ -18,53 +18,12 @@ namespace VisualSolutionGenerator
 
         #region properties        
 
-        public IEnumerable<ProjectInfo> Projects { get { return _Projects == null ? Enumerable.Empty<ProjectInfo>() : _Projects.ProjectFiles.ToArray(); } }
+        public IEnumerable<ProjectInfo> Projects => _Projects == null ? Enumerable.Empty<ProjectInfo>() : _Projects.ProjectFiles.ToArray();
 
-        public IEnumerable<FileErrorInfo> FailedFiles { get { return _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToArray(); } }
+        public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToArray();
 
         public string SolutionPath { get { return _SolutionPath; } set { _SolutionPath = value; RaiseChanged(nameof(SolutionPath)); } }
-
-        public System.Data.DataTable ProjectPackageConfigs
-        {
-            get
-            {
-                var nugets = new HashSet<string>();
-
-                foreach (var pinfo in Projects)
-                {
-                    foreach(var package in pinfo.ItemsPackages)
-                    {
-                        nugets.Add(package.Item1.Replace("."," ")); // for some reason, data.Column names don't like dots
-                    }
-                }
-
-                var data = new System.Data.DataTable();
-
-                data.Columns.Add("Project Name");
-                foreach (var nuget in nugets) data.Columns.Add(nuget);
-
-                foreach (var pinfo in Projects)
-                {
-                    if (pinfo.ItemsPackages.Count() == 0) continue;
-
-                    var row = new Object[nugets.Count + 1];                    
-
-                    row[0] = pinfo.AssemblyName;
-
-                    foreach (var package in pinfo.ItemsPackages)
-                    {
-                        var idx = data.Columns.IndexOf(package.Item1.Replace(".", " "));
-
-                        row[idx] = string.Format("{0} ({1})",package.Item2,package.Item3);                        
-                    }
-
-                    data.Rows.Add(row);
-                }
-
-                return data;
-            }
-        }
-
+                
         #endregion
 
         #region API
@@ -101,7 +60,7 @@ namespace VisualSolutionGenerator
                 }
             }
 
-            RaiseChanged(nameof(Projects), nameof(ProjectPackageConfigs), nameof(FailedFiles));
+            RaiseChanged(nameof(Projects), nameof(FailedFiles));
         }
 
         public void AddDirectoryTree(string directoryPath, IEnumerable<string> excludePrjs, IEnumerable<string> excludeDirs)
@@ -120,7 +79,7 @@ namespace VisualSolutionGenerator
 
                 _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
 
-                RaiseChanged(nameof(Projects), nameof(ProjectPackageConfigs), nameof(FailedFiles));
+                RaiseChanged(nameof(Projects), nameof(FailedFiles));
             }
             catch(Exception ex)
             {

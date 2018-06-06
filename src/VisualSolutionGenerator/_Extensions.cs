@@ -25,11 +25,21 @@ namespace VisualSolutionGenerator
     {
         private const string CSPROJCUSTOMPROP_VIRTUALFOLDERHINT = "SlnGenVirtualFolderHint";
 
-        public static IEnumerable<String> GetAssembliesReferencesRelativePaths(this MSEVLPROJECT proj)
+        public static IEnumerable<String> GetProjectsReferencesRelativePaths(this MSEVLPROJECT proj)
         {
             return proj
                 .AllEvaluatedItems
                 .Where(item => item.ItemType == "Reference")
+                .Select(item => item.EvaluatedInclude)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+        }
+
+        public static IEnumerable<String> GetPackagesReferencesRelativePaths(this MSEVLPROJECT proj)
+        {
+            return proj
+                .AllEvaluatedItems
+                .Where(item => item.ItemType == "PackageReference")
                 .Select(item => item.EvaluatedInclude)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToArray();

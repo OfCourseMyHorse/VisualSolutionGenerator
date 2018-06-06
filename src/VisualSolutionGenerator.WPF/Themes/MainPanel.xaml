@@ -19,11 +19,7 @@
 
             <TabItem Header="Projects">
                 <local:ProjectsGridView DataContext="{Binding Engine.Projects}" />
-            </TabItem>
-
-            <TabItem Header="Packages.Config">
-                <DataGrid ItemsSource="{Binding Engine.ProjectPackageConfigs.DefaultView}" />
-            </TabItem>
+            </TabItem>            
 
             <TabItem Header="Failed Files">
                 <local:FailedFilesGridView DataContext="{Binding Engine.FailedFiles}" />
@@ -42,8 +38,8 @@
 
                                 <GroupBox Header="Details" Background="#20000000" Margin="4">
                                     <DockPanel>
-                                        <TextBlock Text="NetFramework:" />
-                                        <TextBlock Text="{Binding TargetFrameworkVersion}" />
+                                        <TextBlock Text="Framework:" />
+                                        <TextBlock Text="{Binding TargetFrameworks}" />
                                     </DockPanel>
 
                                 </GroupBox>
@@ -57,16 +53,16 @@
                                 </GroupBox>
 
                                 <GroupBox Header="Compilable items" Background="#20000000" Margin="4">
-                                    <ItemsControl ItemsSource="{Binding ItemsToCompile}" DisplayMemberPath="FileName" />
+                                    <ItemsControl ItemsSource="{Binding ItemsToCompile}" DisplayMemberPath="EvaluatedInclude" />
                                 </GroupBox>
 
-                                <GroupBox Header="Nuget Packages" Background="#20000000" Margin="4">
-                                    <ItemsControl ItemsSource="{Binding ItemsPackages}" DisplayMemberPath="Value" />
+                                <GroupBox Header="Package References" Background="#20000000" Margin="4">
+                                    <ItemsControl ItemsSource="{Binding PackageReferences}" />
                                 </GroupBox>
 
                             </WrapPanel>
 
-                            <GroupBox Header="Analisys" Background="#20000000" Margin="4" DataContext="{Binding Analisys}">
+                            <GroupBox Header="Analysis" Background="#20000000" Margin="4" DataContext="{Binding Analysis}">
 
                                 <ScrollViewer>
 

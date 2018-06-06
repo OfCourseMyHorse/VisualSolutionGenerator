@@ -55,7 +55,7 @@ namespace VisualSolutionGenerator
                 {
                     var pg = _Project.GetPropertyValue("ProjectGuid");
 
-                    Guid id; return Guid.TryParse(pg, out id) ? id : _Collection._GetDeferredProjectId(_Project.FullPath);
+                    return Guid.TryParse(pg, out Guid id) ? id : _Collection._GetDeferredProjectId(_Project.FullPath);
                 }
             }
 
@@ -82,8 +82,8 @@ namespace VisualSolutionGenerator
                 {
                     return _Collection
                         .ProjectFiles
-                        .Where(prj => prj._ResolvedProjectReferences.Contains(prj))
-                        .ToArray();
+                        .Where(prj => prj._ResolvedProjectReferences.Contains(this))
+                        .ToList();
                 }
             }
 

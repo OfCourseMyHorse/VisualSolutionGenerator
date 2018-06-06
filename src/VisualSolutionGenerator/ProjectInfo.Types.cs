@@ -92,8 +92,7 @@ namespace VisualSolutionGenerator
 
         #region unknown
 
-        public static readonly Guid Xamarin_Unknown1 = Guid.Parse("{10368E6C-D01B-4462-8E8B-01FC667A7035}");
-        
+        public static readonly Guid Xamarin_Unknown1 = Guid.Parse("{10368E6C-D01B-4462-8E8B-01FC667A7035}");        
 
         #endregion
 
@@ -135,40 +134,41 @@ namespace VisualSolutionGenerator
         {
             if (_Dictionary != null) return _Dictionary;
 
-            var dict = new Dictionary<Guid, string>();
+            var dict = new Dictionary<Guid, string>
+            {
+                { LANG_CPLUSPLUS, "C++" },
+                { LANG_CSHARP, "C#" },
+                { LANG_FSHARP, "F#" },
+                { LANG_JSHARP, "J#" },
 
-            dict.Add(LANG_CPLUSPLUS, "C++");
-            dict.Add(LANG_CSHARP, "C#");
-            dict.Add(LANG_FSHARP, "F#");
-            dict.Add(LANG_JSHARP, "J#");
+                // dict.Add(WIN_CSHARP, "Windows (C#)");
+                { WIN_VBNET, "Windows (VB.NET)" },
+                // dict.Add(WIN_VCPLUSPLUS, "Windows (Visual C++)");
+                { WIN_STORE, "Windows Store (Metro) Apps & Components" },
 
-            // dict.Add(WIN_CSHARP, "Windows (C#)");
-            dict.Add(WIN_VBNET, "Windows (VB.NET)");
-            // dict.Add(WIN_VCPLUSPLUS, "Windows (Visual C++)");
-            dict.Add(WIN_STORE, "Windows Store (Metro) Apps & Components");
-            
-            dict.Add(WCF, "Windows Communication Foundation (WCF)");
-            // dict.Add(MONO_ANDROID, "Mono for Android");
+                { WCF, "Windows Communication Foundation (WCF)" },
+                // dict.Add(MONO_ANDROID, "Mono for Android");
 
-            dict.Add(PORTABLE_CLASS_LIBRARY, "Portable Class Library");
+                { PORTABLE_CLASS_LIBRARY, "Portable Class Library" },
 
-            dict.Add(UWP_CLASS_LIBRARY, "Universal Windows Class Library");
+                { UWP_CLASS_LIBRARY, "Universal Windows Class Library" },
 
-            dict.Add(WPF, "Windows Presentation Foundation (WPF)");
+                { WPF, "Windows Presentation Foundation (WPF)" },
 
-            dict.Add(WINDOWS_PHONE_8, "Windows Phone 8/8.1 Blank/Hub/Webview App");
+                { WINDOWS_PHONE_8, "Windows Phone 8/8.1 Blank/Hub/Webview App" },
 
-            dict.Add(XAMARIN_ANDROID, "Xamarin.Android");            
+                { XAMARIN_ANDROID, "Xamarin.Android" },
 
-            dict.Add(XNA_WIN, "XNA (Windows)");
-            dict.Add(XNA_CONTENT, "XNA (Content)");
+                { XNA_WIN, "XNA (Windows)" },
+                { XNA_CONTENT, "XNA (Content)" },
 
-            dict.Add(ASPNET_MVC5, "ASP.NET MVC 5");
+                { ASPNET_MVC5, "ASP.NET MVC 5" },
 
-            dict.Add(IOS_OBSOLETE, "Xamarin.iOS(Obsolete)");
-            dict.Add(IOS, "Xamarin.iOS");
+                { IOS_OBSOLETE, "Xamarin.iOS(Obsolete)" },
+                { IOS, "Xamarin.iOS" },
 
-            dict.Add(Xamarin_Unknown1, "Xamarin.???");
+                { Xamarin_Unknown1, "Xamarin.???" }
+            };
 
             _Dictionary = dict;
             return dict;
