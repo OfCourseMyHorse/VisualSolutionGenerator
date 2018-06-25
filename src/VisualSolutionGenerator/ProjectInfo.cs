@@ -263,7 +263,7 @@ namespace VisualSolutionGenerator
 
         public String TargetFrameworks      => String.Join(" ", _Project.GetTargetFrameworkMonikers());
 
-        public IEnumerable<String> PackageReferences => this._Project.AllEvaluatedItems.Where(item => item.ItemType == PACKAGEREFERENCE).Select(item => item.EvaluatedInclude).ToList();
+        public IEnumerable<PackageInfo> PackageReferences => this._Project.AllEvaluatedItems.Where(item => item.ItemType == PACKAGEREFERENCE).Select(item => new PackageInfo(item.EvaluatedInclude, item.GetMetadataValue("Version"))).ToList();
 
         #endregion        
 

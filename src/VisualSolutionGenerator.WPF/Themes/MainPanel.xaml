@@ -57,7 +57,7 @@
                                 </GroupBox>
 
                                 <GroupBox Header="Package References" Background="#20000000" Margin="4">
-                                    <ItemsControl ItemsSource="{Binding PackageReferences}" />
+                                    <DataGrid ItemsSource="{Binding PackageReferences}" />
                                 </GroupBox>
 
                             </WrapPanel>
