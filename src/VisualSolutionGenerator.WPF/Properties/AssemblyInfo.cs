@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("VisualSolutionGenerator.WPF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Of Course My Horse")]
 [assembly: AssemblyProduct("Visual Solution Generator")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -15,6 +15,9 @@
                 <MenuItem Header="Save Solution" Command="{Binding GenerateCmd}" />
                 <MenuItem Header="Save DGML Graph" Command="{Binding SaveDgmlCmd}" />
             </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Register File Association" Command="{Binding RegisterFileAssociationCmd}" />
+            </MenuItem>
         </Menu>
 
         <local:MainPanel />
