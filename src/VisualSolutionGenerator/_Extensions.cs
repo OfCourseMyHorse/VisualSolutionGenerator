@@ -81,7 +81,6 @@ namespace VisualSolutionGenerator
             return t;
         }
 
-
         public static String[] GetTargetFrameworkMonikers(this MSEVLPROJECT proj)
         {
             // a project can target multiple frameworks:

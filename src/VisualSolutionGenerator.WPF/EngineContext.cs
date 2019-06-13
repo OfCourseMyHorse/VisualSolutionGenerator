@@ -18,7 +18,7 @@ namespace VisualSolutionGenerator
 
         #region properties        
 
-        public IEnumerable<ProjectInfo> Projects => _Projects == null ? Enumerable.Empty<ProjectInfo>() : _Projects.ProjectFiles.ToArray();
+        public IEnumerable<FileProjectInfo> Projects => _Projects == null ? Enumerable.Empty<FileProjectInfo>() : _Projects.ProjectFiles.ToArray();
 
         public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToArray();
 

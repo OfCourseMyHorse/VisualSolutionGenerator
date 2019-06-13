@@ -5,16 +5,16 @@ using System.Text;
 
 namespace VisualSolutionGenerator
 {
-    partial class ProjectInfo
+    partial class FileProjectInfo
     {
         public View CreateView(Collection c) { return View._Create(this, c); }
 
         [System.Diagnostics.DebuggerDisplay("{FilePath}")]
-        public sealed class View : ProjectInfo
+        public sealed class View : FileProjectInfo
         {
             #region lifecycle
 
-            internal static View _Create(ProjectInfo p, Collection c)
+            internal static View _Create(FileProjectInfo p, Collection c)
             {
                 if (p == null) return null;
                 if (c == null) return null;
@@ -22,7 +22,7 @@ namespace VisualSolutionGenerator
                 return new View(p, c);
             }
 
-            private View(ProjectInfo pinfo, Collection c) : base(pinfo)
+            private View(FileProjectInfo pinfo, Collection c) : base(pinfo)
             {
                 _Collection = c;
                 _FallbackId = Guid.NewGuid();
@@ -71,14 +71,14 @@ namespace VisualSolutionGenerator
             /// <summary>
             /// Outgoing Project References
             /// </summary>
-            public IEnumerable<ProjectInfo> ProjectReferences =>  _ResolvedProjectReferences.OfType<ProjectInfo>().ToList();
+            public IEnumerable<FileProjectInfo> ProjectReferences =>  _ResolvedProjectReferences.OfType<FileProjectInfo>().ToList();
 
-            public IEnumerable<ProjectInfo> TransitiveProjectReferences
+            public IEnumerable<FileProjectInfo> TransitiveProjectReferences
             {
                 get
                 {
                     var references = _ResolvedProjectReferences
-                        .OfType<ProjectInfo>()
+                        .OfType<FileProjectInfo>()
                         .Select(item => item.CreateView(_Collection))
                         .ToList();
 
@@ -91,7 +91,7 @@ namespace VisualSolutionGenerator
             /// <summary>
             /// Incoming Project References
             /// </summary>
-            public IEnumerable<ProjectInfo> ReferencedByProjects
+            public IEnumerable<FileProjectInfo> ReferencedByProjects
             {
                 get
                 {

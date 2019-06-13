@@ -17,7 +17,7 @@ namespace VisualSolutionGenerator
         /// </summary>
         /// <param name="projects">projects to be contained in the virtual folder</param>
         /// <returns></returns>
-        public static _SolutionVirtualFolder CreateRoot(IEnumerable<ProjectInfo.View> projects)
+        public static _SolutionVirtualFolder CreateRoot(IEnumerable<FileProjectInfo.View> projects)
         {
             var root = new _SolutionVirtualFolder(null);
 
@@ -98,7 +98,7 @@ namespace VisualSolutionGenerator
             return child._Use(subPath);
         }
 
-        public void Use(ProjectInfo.View pinfo)
+        public void Use(FileProjectInfo.View pinfo)
         {
             if (string.IsNullOrWhiteSpace(pinfo.Solution.VirtualFolderPath)) return;
 
@@ -107,9 +107,9 @@ namespace VisualSolutionGenerator
             folder._Projects.Add(pinfo.ProjectId);
         }
 
-        public bool ContainsProject(ProjectInfo.View pinfo) { return _Projects.Contains(pinfo.ProjectId); }
+        public bool ContainsProject(FileProjectInfo.View pinfo) { return _Projects.Contains(pinfo.ProjectId); }
 
-        public Guid GetVirtualFolderId(ProjectInfo.View pinfo)
+        public Guid GetVirtualFolderId(FileProjectInfo.View pinfo)
         {
             if (ContainsProject(pinfo)) return FolderId;
 

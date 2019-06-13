@@ -23,7 +23,7 @@ namespace VisualSolutionGenerator
 
             #region constants
 
-            private const string ALLPROJS = "*" + ProjectInfo.ProjFileExtension;
+            private const string ALLPROJS = "*" + FileProjectInfo.ProjFileExtension;
 
             #endregion
 
@@ -40,7 +40,7 @@ namespace VisualSolutionGenerator
 
             #region properties
 
-            public IEnumerable<ProjectInfo.View> ProjectFiles => _Files.OfType<ProjectInfo>().Select(item => item.CreateView(this)).ToList();
+            public IEnumerable<FileProjectInfo.View> ProjectFiles => _Files.OfType<FileProjectInfo>().Select(item => item.CreateView(this)).ToList();
 
             public IEnumerable<FileErrorInfo> FailedFiles => _Files.OfType<FileErrorInfo>().ToList();
 
@@ -62,12 +62,12 @@ namespace VisualSolutionGenerator
                 return _ProjectGuids.TryGetValue(fullPath, out Guid id) ? id : Guid.Empty;
             }
 
-            public ProjectInfo GetByGuid(Guid pid)
+            public FileProjectInfo GetByGuid(Guid pid)
             {
                 return pid == Guid.Empty ? null : ProjectFiles.FirstOrDefault(p => p.ProjectId == pid);
             }
 
-            public ProjectInfo UseProject(System.IO.FileInfo finfo)
+            public FileProjectInfo UseProject(System.IO.FileInfo finfo)
             {
                 if (finfo == null || !finfo.Exists) return null;
 
@@ -75,7 +75,7 @@ namespace VisualSolutionGenerator
 
                 var existing = _Files.FirstOrDefault(item => item.FilePath.ToLower() == fkey);
 
-                if (existing != null) return existing as ProjectInfo;
+                if (existing != null) return existing as FileProjectInfo;
 
                 // load the project and add it to the collection
 
@@ -83,7 +83,7 @@ namespace VisualSolutionGenerator
 
                 if (xinfo is FileErrorInfo) { _Files.Add(xinfo); return null; }
 
-                var pinfo = xinfo as ProjectInfo;
+                var pinfo = xinfo as FileProjectInfo;
 
                 /*
                 if (pinfo.ProjectId != Guid.Empty)
@@ -153,7 +153,7 @@ namespace VisualSolutionGenerator
                 var projects = ProjectFiles.Where(item => item != null).ToList();
 
                 var linkPairs = projects
-                    .SelectMany(item => item.TransitiveProjectReferences.Select(iref => new KeyValuePair<ProjectInfo, FileBaseInfo>(item, iref)))
+                    .SelectMany(item => item.TransitiveProjectReferences.Select(iref => new KeyValuePair<FileProjectInfo, FileBaseInfo>(item, iref)))
                     .Cast<Object>()
                     .ToList();
 
@@ -172,7 +172,7 @@ namespace VisualSolutionGenerator
                     }
                     );
 
-                var groupItemBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<ProjectInfo>
+                var groupItemBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<FileProjectInfo>
                     (
                     x => new OpenSoftware.DgmlTools.Model.Link
                     {
@@ -181,7 +181,7 @@ namespace VisualSolutionGenerator
                         Target = x.FilePath                        
                     });
 
-                var prjBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<ProjectInfo>
+                var prjBuilder = new OpenSoftware.DgmlTools.Builders.NodeBuilder<FileProjectInfo>
                     (
                     x => new OpenSoftware.DgmlTools.Model.Node
                     {
@@ -201,7 +201,7 @@ namespace VisualSolutionGenerator
                     }
                     );
 
-                var linkBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<KeyValuePair<ProjectInfo, FileBaseInfo>>
+                var linkBuilder = new OpenSoftware.DgmlTools.Builders.LinkBuilder<KeyValuePair<FileProjectInfo, FileBaseInfo>>
                     (
                     x => new OpenSoftware.DgmlTools.Model.Link
                     {

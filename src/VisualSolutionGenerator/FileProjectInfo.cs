@@ -64,7 +64,7 @@ namespace VisualSolutionGenerator
     {
         #region lifecycle
 
-        public static SolutionGenerationHints Factory(ProjectInfo pinfo, string baseDirectoryPath)
+        public static SolutionGenerationHints Factory(FileProjectInfo pinfo, string baseDirectoryPath)
         {
             if (pinfo == null) return null;
             // if (pinfo.ProjectId == Guid.Empty) return null;
@@ -152,7 +152,7 @@ namespace VisualSolutionGenerator
     }    
 
     [System.Diagnostics.DebuggerDisplay("{FilePath}")]
-    public partial class ProjectInfo : FileBaseInfo
+    public partial class FileProjectInfo : FileBaseInfo
     {
         #region Constants
         
@@ -178,14 +178,14 @@ namespace VisualSolutionGenerator
 
         #region lifecycle        
 
-        internal ProjectInfo(MSEVLPROJECT prj)
+        internal FileProjectInfo(MSEVLPROJECT prj)
         {
             _Project = prj;            
         }
 
-        public override FileBaseInfo Clone() { return new ProjectInfo(this); }
+        public override FileBaseInfo Clone() { return new FileProjectInfo(this); }
 
-        protected ProjectInfo(ProjectInfo other) : base()
+        protected FileProjectInfo(FileProjectInfo other) : base()
         {
             this._Project = other._Project;            
 
@@ -202,7 +202,7 @@ namespace VisualSolutionGenerator
         /// While we load the references, we "connect" the projects
         /// </remarks>
         /// <param name="evalRefFunc"></param>
-        internal void _EvaluateReferences( Func<FileInfo, Guid, ProjectInfo> evalRefFunc )
+        internal void _EvaluateReferences( Func<FileInfo, Guid, FileProjectInfo> evalRefFunc )
         {
             foreach (var buildItem in this._Project.AllEvaluatedItems)
             {
@@ -267,7 +267,7 @@ namespace VisualSolutionGenerator
 
         #endregion        
 
-        #region extras        
+        #region properties - extras        
 
         // hints for solution generation (move to view)
         public SolutionGenerationHints      Solution        => _SolutionView;
@@ -308,9 +308,7 @@ namespace VisualSolutionGenerator
         public bool ShowPropertiesGlobal { get { return _ShowPropertiesGlobal; } set { _ShowPropertiesGlobal = value; RaiseChanged(nameof(Properties)); } }
         public bool ShowPropertiesReserved { get { return _ShowPropertiesReserved; } set { _ShowPropertiesReserved = value; RaiseChanged(nameof(Properties)); } }
         public bool ShowPropertiesInported { get { return _ShowPropertiesInported; } set { _ShowPropertiesInported = value; RaiseChanged(nameof(Properties)); } }
-        public string ShowPropertiesContaining { get { return _ShowPropertiesContaining; } set { _ShowPropertiesContaining = value; RaiseChanged(nameof(Properties)); } }
-
-        
+        public string ShowPropertiesContaining { get { return _ShowPropertiesContaining; } set { _ShowPropertiesContaining = value; RaiseChanged(nameof(Properties)); } }        
 
         public IEnumerable<Tuple<string, string, string>> Properties
         {
@@ -344,7 +342,8 @@ namespace VisualSolutionGenerator
             {
                 return _Project
                     .AllEvaluatedItems
-                    .Select(item => new KeyValuePair<string, string>(item.ItemType, item.EvaluatedInclude));
+                    .Select(item => new KeyValuePair<string, string>(item.ItemType, item.EvaluatedInclude))
+                    .ToList();
             }
         }
 

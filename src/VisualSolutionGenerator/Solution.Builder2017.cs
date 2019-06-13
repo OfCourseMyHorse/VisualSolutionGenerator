@@ -79,7 +79,7 @@ namespace VisualSolutionGenerator
             writer.WriteLine("EndProject");
         }
 
-        private static void _WriteProjectEntry(TextWriter writer, ProjectInfo.View prj, string rootFolder)
+        private static void _WriteProjectEntry(TextWriter writer, FileProjectInfo.View prj, string rootFolder)
         {
             var ppath = Utils.GetRelativePath(rootFolder, prj.FilePath);
 
@@ -92,7 +92,7 @@ namespace VisualSolutionGenerator
             writer.WriteLine("EndProject");
         }
 
-        private static void _WriteNestedProjects(IEnumerable<ProjectInfo.View> projects, _SolutionVirtualFolder root, StringWriter writer)
+        private static void _WriteNestedProjects(IEnumerable<FileProjectInfo.View> projects, _SolutionVirtualFolder root, StringWriter writer)
         {
             writer.WriteLine("\tGlobalSection(NestedProjects) = preSolution");            
 
