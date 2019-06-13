@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ProjectBuilder": {
+      "commandName": "Project",
+      "commandLineArgs": "ProjectBuilder ..\\..\\..\\test.proj"
+    }
+  }
+}

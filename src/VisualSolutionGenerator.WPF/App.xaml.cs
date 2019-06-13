@@ -14,6 +14,8 @@ namespace VisualSolutionGenerator
         [STAThread]
         public static void Main()
         {
+            Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();            
+
             _ProcessSolutionGenFile();
 
             if (CommandLineParser.Default.IsSilent) { _ProcessSilent(); return; }
