@@ -11,8 +11,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
 
-    <PackageReference Include="Microsoft.Build" Version="15.5.180" ExcludeAssets="Runtime" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build" Version="16.0.461" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" ExcludeAssets="Runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.2" />
   </ItemGroup>
 
