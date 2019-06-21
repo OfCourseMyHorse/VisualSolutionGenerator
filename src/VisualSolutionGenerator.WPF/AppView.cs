@@ -17,10 +17,9 @@ namespace VisualSolutionGenerator
         {
             IncludeDirectoryTreeCmd = new RelayCommand(_SelectDirectoryTree);
             IncludeSingleProjectCmd = new RelayCommand(_SelectSingleProjectPath);
-            BrowseSolutionPathCmd = new RelayCommand(_SetTargetSolutionPath);
 
-            GenerateCmd = new RelayCommand(_Engine.GenerateSolution);
-
+            SaveSolutionCmd = new RelayCommand(_Engine.SaveSolution);
+            SaveSolutionAsCmd = new RelayCommand(_SetTargetSolutionPath);
             SaveDgmlCmd = new RelayCommand(_SaveDgmlFile);
 
             RegisterFileAssociationCmd = new RelayCommand(_RegisterExtensions);
@@ -42,10 +41,9 @@ namespace VisualSolutionGenerator
 
         public ICommand IncludeSingleProjectCmd { get; private set; }
         public ICommand IncludeDirectoryTreeCmd { get; private set; }
-        public ICommand BrowseSolutionPathCmd { get; private set; }
 
-        public ICommand GenerateCmd { get; private set; }
-
+        public ICommand SaveSolutionCmd { get; private set; }
+        public ICommand SaveSolutionAsCmd { get; private set; }
         public ICommand SaveDgmlCmd { get; private set; }
 
         public ICommand RegisterFileAssociationCmd { get; private set; }
@@ -101,7 +99,7 @@ namespace VisualSolutionGenerator
 
             _Engine.SolutionPath = dlg.FileName;
 
-            _Engine.GenerateSolution();
+            _Engine.SaveSolution();
         }
 
         private void _SaveDgmlFile()
@@ -116,7 +114,7 @@ namespace VisualSolutionGenerator
 
             if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;
 
-            _Engine.GenerateDgml(dlg.FileName);
+            _Engine.SaveDgml(dlg.FileName);
         }
 
         private void _RegisterExtensions()

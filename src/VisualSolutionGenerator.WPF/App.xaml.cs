@@ -45,7 +45,7 @@ namespace VisualSolutionGenerator
             var engine = new EngineContext();
             engine.ProcessCommandLine(CommandLineParser.Default);
 
-            engine.GenerateSolution();
+            engine.SaveSolution();
 
             if (!string.IsNullOrWhiteSpace(CommandLineParser.Default.RunAfter))
             {

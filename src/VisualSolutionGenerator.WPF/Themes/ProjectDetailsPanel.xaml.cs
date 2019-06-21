@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,10 +14,13 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace VisualSolutionGenerator.Themes
-{    
-    public partial class ProjectViewPanel : UserControl
+{
+    /// <summary>
+    /// Interaction logic for ProjectDetailsPanel.xaml
+    /// </summary>
+    public partial class ProjectDetailsPanel : UserControl
     {
-        public ProjectViewPanel()
+        public ProjectDetailsPanel()
         {
             InitializeComponent();
         }

@@ -4,7 +4,7 @@
         
         xmlns:local="clr-namespace:VisualSolutionGenerator.Themes"
 
-        Title="MainWindow" Height="350" Width="525">
+        Title="{Binding Engine.SolutionPath, StringFormat='Visual Solution Generator - {0}'}" Height="350" Width="525">
 
     <DockPanel>
 
@@ -12,13 +12,19 @@
             <MenuItem Header="File">
                 <MenuItem Header="Include Single Project" Command="{Binding IncludeSingleProjectCmd}" />
                 <MenuItem Header="Include Directory Tree" Command="{Binding IncludeDirectoryTreeCmd}" />
-                <MenuItem Header="Save Solution" Command="{Binding GenerateCmd}" />
-                <MenuItem Header="Save DGML Graph" Command="{Binding SaveDgmlCmd}" />
+                <Separator />
+                <MenuItem Header="Save Solution" Command="{Binding SaveSolutionCmd}" />
+                <MenuItem Header="Save Solution As..." Command="{Binding SaveSolutionAsCmd}" />
+                <MenuItem Header="Save DGML Graph..." Command="{Binding SaveDgmlCmd}" />
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Register File Association" Command="{Binding RegisterFileAssociationCmd}" />
             </MenuItem>
         </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding Engine.SolutionPath}" />
+        </StatusBar>
 
         <local:MainPanel />
 

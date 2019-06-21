@@ -10,9 +10,15 @@ namespace VisualSolutionGenerator
     {
         #region data
 
+        /// <summary>
+        /// Collection of project files
+        /// </summary>
         private FileBaseInfo.Collection _Projects;
 
-        private string _SolutionPath;
+        /// <summary>
+        /// Path where we save the solution
+        /// </summary>
+        private string _SolutionSavePath;
 
         #endregion
 
@@ -22,7 +28,11 @@ namespace VisualSolutionGenerator
 
         public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToArray();
 
-        public string SolutionPath { get { return _SolutionPath; } set { _SolutionPath = value; RaiseChanged(nameof(SolutionPath)); } }
+        public string SolutionPath
+        {
+            get => _SolutionSavePath;
+            set { _SolutionSavePath = value; RaiseChanged(nameof(SolutionPath)); }
+        }
                 
         #endregion
 
@@ -87,12 +97,12 @@ namespace VisualSolutionGenerator
             }
         }
 
-        public void GenerateSolution()
+        public void SaveSolution()
         {
            SolutionBuilder2017.WriteSolutionFile(SolutionPath, _Projects);
         }
 
-        public void GenerateDgml(string filePath)
+        public void SaveDgml(string filePath)
         {
             var dgml = _Projects.ToDGML();
 

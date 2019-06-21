@@ -83,11 +83,11 @@
     <Compile Include="Themes\MainPanel.xaml.cs">
       <DependentUpon>MainPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\ProjectDetailsPanel.xaml.cs">
+      <DependentUpon>ProjectDetailsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Themes\ProjectsGridView.xaml.cs">
       <DependentUpon>ProjectsGridView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Themes\ProjectViewPanel.xaml.cs">
-      <DependentUpon>ProjectViewPanel.xaml</DependentUpon>
     </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,11 +116,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ProjectsGridView.xaml">
+    <Page Include="Themes\ProjectDetailsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\ProjectViewPanel.xaml">
+    <Page Include="Themes\ProjectsGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
