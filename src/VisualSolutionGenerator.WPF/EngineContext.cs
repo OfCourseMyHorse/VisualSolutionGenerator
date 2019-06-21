@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.XPath;
 
-          
 namespace VisualSolutionGenerator
 {
     sealed class EngineContext : BindableBase
@@ -124,12 +124,20 @@ namespace VisualSolutionGenerator
             int part = 0;
             int total = _Projects.ProjectFiles.Count();
 
+            if (total == 0) return;
+
+            total += 1;
+
+            var metricFiles = new List<string>();
+
             foreach(var prj in _Projects.ProjectFiles)
             {
                 if (monitor((part * 100 / total), prj.FilePath)) break;
 
                 var prjPath = prj.FilePath;
                 var mtcPath = System.IO.Path.Combine(directoryPath, System.IO.Path.GetFileNameWithoutExtension( System.IO.Path.GetFileName(prjPath)) + ".xml");
+
+                metricFiles.Add(mtcPath);
 
                 var psi = new System.Diagnostics.ProcessStartInfo(exePath);
                 psi.Arguments = $"/p:\"{prjPath}\" /out:\"{mtcPath}\"";
@@ -142,6 +150,39 @@ namespace VisualSolutionGenerator
 
                 ++part;
             }
+
+            if (monitor(((total -1) / total), "table")) return;
+
+
+            var sb = new StringBuilder();
+
+            foreach(var f in metricFiles)
+            {
+                if (!System.IO.File.Exists(f)) continue;
+                var xml = System.Xml.Linq.XElement.Load(f);
+
+                foreach(var target in xml.Descendants("Targets"))
+                {
+                    var assembly = target.Descendants("Assembly").First();
+                    var assemblyName = assembly.Attribute("Name").Value.Replace(" ","_");
+
+                    sb.Append($"{assemblyName}, ");
+
+                    var metrics = assembly.Descendants("Metrics").First();
+
+                    foreach(var metric in metrics.Descendants("Metric"))
+                    {
+                        var k = metric.Attribute("Name").Value;
+                        var v = metric.Attribute("Value").Value;
+
+                        sb.Append($"{v}, ");
+                    }
+
+                    sb.AppendLine();
+                }
+            }
+
+            System.IO.File.WriteAllText(System.IO.Path.Combine(directoryPath, "metrics.csv"), sb.ToString());
         }
 
         #endregion
