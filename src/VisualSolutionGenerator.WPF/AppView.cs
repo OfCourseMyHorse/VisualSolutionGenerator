@@ -21,6 +21,7 @@ namespace VisualSolutionGenerator
             SaveSolutionCmd = new RelayCommand(_Engine.SaveSolution);
             SaveSolutionAsCmd = new RelayCommand(_SetTargetSolutionPath);
             SaveDgmlCmd = new RelayCommand(_SaveDgmlFile);
+            SaveMetricsCmd = new RelayCommand(_SaveMetrics);
 
             RegisterFileAssociationCmd = new RelayCommand(_RegisterExtensions);
 
@@ -45,6 +46,7 @@ namespace VisualSolutionGenerator
         public ICommand SaveSolutionCmd { get; private set; }
         public ICommand SaveSolutionAsCmd { get; private set; }
         public ICommand SaveDgmlCmd { get; private set; }
+        public ICommand SaveMetricsCmd { get; private set; }
 
         public ICommand RegisterFileAssociationCmd { get; private set; }
 
@@ -54,7 +56,7 @@ namespace VisualSolutionGenerator
 
         private void _SelectDirectoryTree()
         {
-            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog("Select Source Directory"))
+            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog("Select Projects source Directory"))
             {
                 dlg.IsFolderPicker = true;
                 dlg.RestoreDirectory = true;
@@ -115,6 +117,50 @@ namespace VisualSolutionGenerator
             if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;
 
             _Engine.SaveDgml(dlg.FileName);
+        }
+
+        private void _SaveMetrics()
+        {
+            string dstDir = null;
+
+            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog("Select Metrics target Directory"))
+            {
+                dlg.IsFolderPicker = true;
+                dlg.RestoreDirectory = true;
+
+                if (dlg.ShowDialog() != Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok) return;
+
+                dstDir = dlg.FileName;
+            }
+
+            
+            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.TaskDialog())
+            {
+                dlg.ProgressBar = new Microsoft.WindowsAPICodePack.Dialogs.TaskDialogProgressBar();
+                dlg.Cancelable = true;
+
+                dlg.ProgressBar.Minimum = 0;
+                dlg.ProgressBar.Maximum = 100;
+
+                bool monitor(int percent, string msg)
+                {
+                    dlg.ProgressBar.Value = percent;
+                    return false;
+                }
+
+                void process()
+                {
+                    _Engine.SaveProjectsMetrics(dstDir, monitor);
+                    dlg.Close();
+                }
+
+                dlg.Opened += (s, e) =>
+                {
+                    System.Threading.Tasks.Task.Factory.StartNew(process);
+                };                
+
+                dlg.Show();                
+            }
         }
 
         private void _RegisterExtensions()

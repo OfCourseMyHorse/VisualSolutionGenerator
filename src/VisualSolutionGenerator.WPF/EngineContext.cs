@@ -113,6 +113,37 @@ namespace VisualSolutionGenerator
             }
         }
 
+        public void SaveProjectsMetrics(string directoryPath, Func<int, string, bool> monitor)
+        {
+            System.IO.Directory.CreateDirectory(directoryPath);
+
+            // TODO: force restore package, then find exe
+
+            var exePath = @"C:\Users\vpena\.nuget\packages\microsoft.codeanalysis.metrics\2.9.3\Metrics\Metrics.exe";
+
+            int part = 0;
+            int total = _Projects.ProjectFiles.Count();
+
+            foreach(var prj in _Projects.ProjectFiles)
+            {
+                if (monitor((part * 100 / total), prj.FilePath)) break;
+
+                var prjPath = prj.FilePath;
+                var mtcPath = System.IO.Path.Combine(directoryPath, System.IO.Path.GetFileNameWithoutExtension( System.IO.Path.GetFileName(prjPath)) + ".xml");
+
+                var psi = new System.Diagnostics.ProcessStartInfo(exePath);
+                psi.Arguments = $"/p:\"{prjPath}\" /out:\"{mtcPath}\"";
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+
+                System.Diagnostics.Process
+                    .Start(psi)
+                    .WaitForExit();
+
+                ++part;
+            }
+        }
+
         #endregion
     }
 }
