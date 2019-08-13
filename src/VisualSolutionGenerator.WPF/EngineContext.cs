@@ -30,7 +30,7 @@ namespace VisualSolutionGenerator
 
         public string SolutionPath
         {
-            get => _SolutionSavePath;
+            get => _SolutionSavePath != null ? _SolutionSavePath : SolutionConstants.GetSemanticVersion();
             set { _SolutionSavePath = value; RaiseChanged(nameof(SolutionPath)); }
         }
                 

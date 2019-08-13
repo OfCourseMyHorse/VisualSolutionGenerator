@@ -1,11 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace VisualSolutionGenerator
 {
-    static class SolutionConstants
+    public static class SolutionConstants
     {
+        #region Semantic Version
+
+        public static string GetSemanticVersion()
+        {
+            var infoversion = typeof(SolutionConstants)
+                .Assembly
+                .GetCustomAttributes(true)
+                .OfType<System.Reflection.AssemblyInformationalVersionAttribute>()
+                .FirstOrDefault();
+
+            return infoversion?.InformationalVersion;
+        }
+
+        #endregion
+
         #region data       
 
         // From Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Projects\

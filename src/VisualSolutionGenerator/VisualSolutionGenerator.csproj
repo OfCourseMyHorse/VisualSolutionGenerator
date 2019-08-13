@@ -4,6 +4,23 @@
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
   
+  <!-- Auto Version-->
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <VersionSuffix>dev-$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmm))</VersionSuffix>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
+    <VersionSuffix>preview-$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmm))</VersionSuffix>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
   <!-- https://github.com/dotnet/docfx/issues/512 -->
   
   <!-- https://github.com/dotnet/sdk/issues/2203 -->
