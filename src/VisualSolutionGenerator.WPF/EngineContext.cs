@@ -22,18 +22,20 @@ namespace VisualSolutionGenerator
 
         #endregion
 
-        #region properties        
+        #region properties
 
-        public IEnumerable<FileProjectInfo> Projects => _Projects == null ? Enumerable.Empty<FileProjectInfo>() : _Projects.ProjectFiles.ToArray();
+        public IEnumerable<FileProjectInfo> Projects => _Projects == null ? Enumerable.Empty<FileProjectInfo>() : _Projects.ProjectFiles.ToList();
 
-        public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToArray();
+        public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToList();
 
         public string SolutionPath
         {
-            get => _SolutionSavePath != null ? _SolutionSavePath : SolutionConstants.GetSemanticVersion();
-            set { _SolutionSavePath = value; RaiseChanged(nameof(SolutionPath)); }
+            get => _SolutionSavePath;
+            set { _SolutionSavePath = value; RaiseChanged(nameof(SolutionPath), nameof(DisplayTitle)); }
         }
-                
+
+        public string DisplayTitle => _SolutionSavePath != null ? _SolutionSavePath : SolutionConstants.GetSemanticVersion();
+
         #endregion
 
         #region API
@@ -75,26 +77,31 @@ namespace VisualSolutionGenerator
 
         public void AddDirectoryTree(string directoryPath, IEnumerable<string> excludePrjs, IEnumerable<string> excludeDirs)
         {
-            try
+            var action = new Action(() => _AddDirectoryTree(directoryPath, excludePrjs, excludeDirs));
+
+            action.InvokeWithUserInterface();
+        }
+
+        void _AddDirectoryTree(string directoryPath, IEnumerable<string> excludePrjs, IEnumerable<string> excludeDirs)
+        {
+            if (string.IsNullOrWhiteSpace(SolutionPath))
             {
-
-                if (string.IsNullOrWhiteSpace(SolutionPath))
-                {
-                    var dir = System.IO.Path.Combine(directoryPath, "GlobalView.tmp");
-                    SolutionPath = System.IO.Path.ChangeExtension(dir, ".Generated.sln");
-                }
-
-                if (_Projects == null) _Projects = new FileBaseInfo.Collection(new System.IO.DirectoryInfo(System.IO.Path.GetDirectoryName(SolutionPath)));
-
-
-                _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
-
-                RaiseChanged(nameof(Projects), nameof(FailedFiles));
+                var dir = System.IO.Path.Combine(directoryPath, "GlobalView.tmp");
+                SolutionPath = System.IO.Path.ChangeExtension(dir, ".Generated.sln");
             }
-            catch(Exception ex)
+
+            if (_Projects == null)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Error");
+                var path = System.IO.Path.GetDirectoryName(SolutionPath);
+                var dir = new System.IO.DirectoryInfo(path);
+
+                _Projects = new FileBaseInfo.Collection(dir);
             }
+
+
+            _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
+
+            RaiseChanged(nameof(Projects), nameof(FailedFiles));
         }
 
         public void SaveSolution()

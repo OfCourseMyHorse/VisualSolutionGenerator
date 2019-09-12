@@ -4,7 +4,7 @@
         
         xmlns:local="clr-namespace:VisualSolutionGenerator.Themes"
 
-        Title="{Binding Engine.SolutionPath, StringFormat='Visual Solution Generator - {0}'}" Height="350" Width="525">
+        Title="{Binding Engine.DisplayTitle, StringFormat='Visual Solution Generator - {0}'}" Height="350" Width="525">
 
     <DockPanel>
 

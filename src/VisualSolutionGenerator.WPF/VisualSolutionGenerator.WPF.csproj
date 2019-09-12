@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AppView.cs" />
     <Compile Include="CommandLineConstants.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="MVVM.RelayCommand.cs" />
     <Compile Include="Themes\FailedFilesGridView.xaml.cs">
       <DependentUpon>FailedFilesGridView.xaml</DependentUpon>
