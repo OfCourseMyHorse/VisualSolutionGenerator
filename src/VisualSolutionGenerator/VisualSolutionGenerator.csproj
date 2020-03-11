@@ -1,39 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
-  
-  <!-- Auto Version-->
+    <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
+  </PropertyGroup>  
 
-  <PropertyGroup>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <VersionSuffix>dev-$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmm))</VersionSuffix>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' != 'Debug' ">
-    <VersionSuffix>preview-$([System.DateTime]::UtcNow.ToString(yyyyMMdd-HHmm))</VersionSuffix>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <!-- https://github.com/dotnet/docfx/issues/512 -->
-  
+  <!-- https://github.com/dotnet/docfx/issues/512 -->  
   <!-- https://github.com/dotnet/sdk/issues/2203 -->
 
   <ItemGroup>
-
-    <PackageReference Include="Microsoft.Build" Version="16.3.0" ExcludeAssets="runtime" />    
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.3.0" ExcludeAssets="runtime" />   
-
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />   
-    
+    <PackageReference Include="Microsoft.Build" Version="16.3.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.3.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />    
     <PackageReference Include="OpenSoftware.DgmlBuilder" Version="1.13.0" />    
-    
   </ItemGroup>
 
 </Project>

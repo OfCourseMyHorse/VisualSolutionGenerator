@@ -6,21 +6,19 @@ using System.Linq;
 using System.Windows;
 
 namespace VisualSolutionGenerator
-{    
-    public partial class App : Application
+{
+    public static class AppEntryPoint
     {
-        #region MAIN
-
         [STAThread]
         public static void Main()
         {
-            Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();            
+            Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();
 
             _ProcessSolutionGenFile();
 
-            if (CommandLineParser.Default.IsSilent) { _ProcessSilent(); return; }
+            // if (CommandLineParser.Default.IsSilent) { _ProcessSilent(); return; }
 
-            var application = new App();            
+            var application = new App();
             application.InitializeComponent();
             application.Run();
         }
@@ -31,13 +29,13 @@ namespace VisualSolutionGenerator
 
             if (string.IsNullOrWhiteSpace(slnGenFilePath)) return;
             if (!System.IO.File.Exists(slnGenFilePath)) return;
-            
+
             System.Environment.CurrentDirectory = System.IO.Path.GetDirectoryName(slnGenFilePath);
 
             var slngen = System.IO.File.ReadAllLines(slnGenFilePath);
             slngen = slngen.Select(l => l.Replace("\"", "")).ToArray();
 
-            CommandLineParser.Default.UpdateParameters(slngen);            
+            CommandLineParser.Default.UpdateParameters(slngen);
         }
 
         private static void _ProcessSilent()
@@ -51,9 +49,11 @@ namespace VisualSolutionGenerator
             {
                 System.Diagnostics.Process.Start(CommandLineParser.Default.RunAfter);
             }
-        }       
-        
+        }
+    }
 
-        #endregion
+    public partial class App : Application
+    {
+        
     }    
 }
