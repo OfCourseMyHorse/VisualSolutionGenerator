@@ -304,17 +304,17 @@ namespace VisualSolutionGenerator
 
         #region properties
 
-        public bool ShowPropertiesEnvironment { get { return _ShowPropertiesEnvironment; } set { _ShowPropertiesEnvironment = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesGlobal { get { return _ShowPropertiesGlobal; } set { _ShowPropertiesGlobal = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesReserved { get { return _ShowPropertiesReserved; } set { _ShowPropertiesReserved = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesInported { get { return _ShowPropertiesInported; } set { _ShowPropertiesInported = value; RaiseChanged(nameof(Properties)); } }
-        public string ShowPropertiesContaining { get { return _ShowPropertiesContaining; } set { _ShowPropertiesContaining = value; RaiseChanged(nameof(Properties)); } }        
+        public bool ShowPropertiesEnvironment { get => _ShowPropertiesEnvironment; set { _ShowPropertiesEnvironment = value; RaiseChanged(nameof(Properties)); } }
+        public bool ShowPropertiesGlobal { get => _ShowPropertiesGlobal; set { _ShowPropertiesGlobal = value; RaiseChanged(nameof(Properties)); } }
+        public bool ShowPropertiesReserved { get => _ShowPropertiesReserved; set { _ShowPropertiesReserved = value; RaiseChanged(nameof(Properties)); } }
+        public bool ShowPropertiesInported { get => _ShowPropertiesInported; set { _ShowPropertiesInported = value; RaiseChanged(nameof(Properties)); } }
+        public string ShowPropertiesContaining { get => _ShowPropertiesContaining; set { _ShowPropertiesContaining = value; RaiseChanged(nameof(Properties)); } }        
 
-        public IEnumerable<Tuple<string, string, string>> Properties
+        public IEnumerable<(string Name, string Unevaluated, string Evaluated)> Properties
         {
             get
             {
-                var props = new List<Tuple<string,string,string>>();
+                var props = new List<(string,string,string)>();
 
                 foreach (var p in _Project.AllEvaluatedProperties)
                 {
@@ -329,7 +329,7 @@ namespace VisualSolutionGenerator
 
                     if (!filter) continue;
                     
-                    props.Add(new Tuple<string, string, string>(p.Name, p.UnevaluatedValue, p.EvaluatedValue));
+                    props.Add((p.Name, p.UnevaluatedValue, p.EvaluatedValue));
                 }
 
                 return props;

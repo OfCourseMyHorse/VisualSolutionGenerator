@@ -41,49 +41,7 @@
 
             <GroupBox Header="Analysis" Background="#20000000" Margin="4" DataContext="{Binding Analysis}">
 
-                <ScrollViewer>
-
-                    <StackPanel>
-
-                        <Expander Header="Properties" Background="#20000000" Margin="4">
-
-                            <DockPanel >
-
-                                <WrapPanel DockPanel.Dock="Top">
-                                    <CheckBox Content="Environment" IsChecked="{Binding ShowPropertiesEnvironment}" Margin="4" />
-                                    <CheckBox Content="Global" IsChecked="{Binding ShowPropertiesGlobal}" Margin="4"/>
-                                    <CheckBox Content="Imported" IsChecked="{Binding ShowPropertiesImported}" Margin="4"/>
-                                    <CheckBox Content="Reserved" IsChecked="{Binding ShowPropertiesReserved}" Margin="4"/>
-                                    <TextBox Text="{Binding ShowPropertiesContaining,UpdateSourceTrigger=PropertyChanged}" MinWidth="80" Margin="4"/>
-                                </WrapPanel>
-
-                                <ListView ItemsSource="{Binding Properties}" TextElement.FontSize="9">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn Header="Property" DisplayMemberBinding="{Binding Item1}" />
-                                            <GridViewColumn Header="Unevaluated" DisplayMemberBinding="{Binding Item2}" Width="300" />
-                                            <GridViewColumn Header="Evaluated" DisplayMemberBinding="{Binding Item3}" Width="300" />
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </DockPanel>
-
-                        </Expander>
-
-                        <Expander Header="Items" Background="#20000000" Margin="4">
-                            <ListView ItemsSource="{Binding EvaluatedItems}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn Header="Item" DisplayMemberBinding="{Binding Key}" />
-                                        <GridViewColumn Header="Value" DisplayMemberBinding="{Binding Value}" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Expander>
-
-                    </StackPanel>
-
-                </ScrollViewer>
+                <local:AnalysisPanel />
 
             </GroupBox>
 

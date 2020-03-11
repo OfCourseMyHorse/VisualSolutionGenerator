@@ -146,14 +146,14 @@ namespace VisualSolutionGenerator
                 // dict.Add(WIN_VCPLUSPLUS, "Windows (Visual C++)");
                 { WIN_STORE, "Windows Store (Metro) Apps & Components" },
 
-                { WCF, "Windows Communication Foundation (WCF)" },
+                { WCF, "WCF" },
                 // dict.Add(MONO_ANDROID, "Mono for Android");
 
-                { PORTABLE_CLASS_LIBRARY, "Portable Class Library" },
+                { PORTABLE_CLASS_LIBRARY, "PCL" },
 
                 { UWP_CLASS_LIBRARY, "Universal Windows Class Library" },
 
-                { WPF, "Windows Presentation Foundation (WPF)" },
+                { WPF, "WPF" },
 
                 { WINDOWS_PHONE_8, "Windows Phone 8/8.1 Blank/Hub/Webview App" },
 

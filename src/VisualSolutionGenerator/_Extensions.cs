@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+// this represents the source code DOM of the project file
+using MSSRCPROJECT = Microsoft.Build.Construction.ProjectRootElement;
+
+// this represents the evaluated data of the project file
+using MSEVLPROJECT = Microsoft.Build.Evaluation.Project;
+
+// this represent a project ready to build
+using MSEXEPROJECT = Microsoft.Build.Execution.ProjectInstance;
+
 
 namespace VisualSolutionGenerator
 {
-    // this represents the source code DOM of the project file
-    using MSSRCPROJECT = Microsoft.Build.Construction.ProjectRootElement;
-
-    // this represents the evaluated data of the project file
-    using MSEVLPROJECT = Microsoft.Build.Evaluation.Project;
-
-    // this represent a project ready to build
-    using MSEXEPROJECT = Microsoft.Build.Execution.ProjectInstance;
-
-
     // Accessing Project Type Specific Project, Project Item, and Configuration Properties
     // https://msdn.microsoft.com/en-us/library/ms228958.aspx
-
-
 
     static class _Extensions
     {
@@ -46,16 +43,28 @@ namespace VisualSolutionGenerator
         }
 
         public static IEnumerable<Guid> GetProjectTypes(this MSEVLPROJECT proj)
-        {            
-            var val = proj.GetPropertyValue("ProjectTypeGuids");
-            if (string.IsNullOrWhiteSpace(val)) return Enumerable.Empty<Guid>();
+        {
+            var guids = new HashSet<Guid>();
 
-            return val
+            var outt = proj.GetPropertyValue("UseWPF").ToLower();
+
+            if (outt == "true") guids.Add(ProjectInfoTypes.WPF);
+
+            var val = proj.GetPropertyValue("ProjectTypeGuids");
+            if (!string.IsNullOrWhiteSpace(val))
+            {
+                var vals = val
                 .Split(';')
-                .Select(item => Guid.Parse(item))
-                .Distinct()
-                .OrderBy(item => item, ProjectInfoTypes.Comparer)
-                .ToArray();            
+                .Select(item => Guid.Parse(item));
+                
+                guids.UnionWith(vals);
+            }
+
+            var sorted = guids.ToList();
+            sorted.Sort();
+            
+            return sorted;
+                
         }
 
         public static String GetVirtualFolderHint(this MSEVLPROJECT proj) { return proj.GetPropertyValue(CSPROJCUSTOMPROP_VIRTUALFOLDERHINT); }
