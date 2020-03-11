@@ -56,15 +56,11 @@ namespace VisualSolutionGenerator
 
         private void _SelectDirectoryTree()
         {
-            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog("Select Projects source Directory"))
-            {
-                dlg.IsFolderPicker = true;
-                dlg.RestoreDirectory = true;
+            
 
-                if (dlg.ShowDialog() != Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok) return;
+            var path = _OpenFolderBrowserDialog("Select root directory to begin scanning for projects.");
 
-                _Engine.AddDirectoryTree(dlg.FileName, null, null);
-            }
+            if (path != null) _Engine.AddDirectoryTree(path, null, null);
         }
 
         private void _SelectSingleProjectPath()
@@ -121,18 +117,8 @@ namespace VisualSolutionGenerator
 
         private void _SaveMetrics()
         {
-            string dstDir = null;
-
-            using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog("Select Metrics target Directory"))
-            {
-                dlg.IsFolderPicker = true;
-                dlg.RestoreDirectory = true;
-
-                if (dlg.ShowDialog() != Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok) return;
-
-                dstDir = dlg.FileName;
-            }
-
+            string dstDir = _OpenFolderBrowserDialog("Select Metrics target Directory");
+            if (dstDir == null) return;
             
             using (var dlg = new Microsoft.WindowsAPICodePack.Dialogs.TaskDialog())
             {
@@ -183,6 +169,21 @@ namespace VisualSolutionGenerator
 
             // register extension
             extRegSrc.AssociateFilesWithApplication(applicationInfo.Name);
+        }
+
+
+        private string _OpenFolderBrowserDialog(string description)
+        {
+            // https://github.com/dotnet/wpf/issues/438#issuecomment-479944544
+
+            using (var dlg = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                dlg.UseDescriptionForTitle = !string.IsNullOrWhiteSpace(description);
+                dlg.Description = description; // "Select root directory to begin scanning for projects."
+                if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return null;
+
+                return dlg.SelectedPath;
+            }
         }
 
         #endregion

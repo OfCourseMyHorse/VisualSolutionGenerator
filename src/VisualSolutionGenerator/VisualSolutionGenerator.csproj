@@ -2,7 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
-  </PropertyGroup>  
+    <Version>1.0.1-Alpha</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DOTNET_RUNNING_IN_CONTAINER)' == 'true'">
+    <Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+    <Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+    <Version>1.0.$(Build).$(Revision)</Version>
+  </PropertyGroup>
 
   <!-- https://github.com/dotnet/docfx/issues/512 -->  
   <!-- https://github.com/dotnet/sdk/issues/2203 -->
