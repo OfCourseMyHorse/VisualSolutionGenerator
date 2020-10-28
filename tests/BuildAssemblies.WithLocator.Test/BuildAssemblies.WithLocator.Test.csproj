@@ -14,8 +14,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
 
-    <PackageReference Include="Microsoft.Build" Version="16.6.0" ExcludeAssets="Runtime" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.6.0" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build" Version="16.7.0" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.7.0" ExcludeAssets="Runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
   </ItemGroup>
 
