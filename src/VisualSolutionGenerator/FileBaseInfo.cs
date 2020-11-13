@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace VisualSolutionGenerator
 {
@@ -26,7 +29,8 @@ namespace VisualSolutionGenerator
 
             try
             {
-                var project = new MSPROJECT(filePath.FullName);
+                var props = IsNetCoreProject(filePath) ? null : NetFrameworkProperties.Value;
+                var project = new MSPROJECT(filePath.FullName, props, null);
 
                 var pinfo = new FileProjectInfo(project);
 
@@ -77,8 +81,35 @@ namespace VisualSolutionGenerator
         public string FileName => Path.GetFileNameWithoutExtension(FilePath);
         public string FileDirectory => Path.GetDirectoryName(FilePath);
 
-        #endregion                
+        #endregion
+
+        #region helpers
+
+        private static readonly Lazy<IDictionary<string, string>> NetFrameworkProperties = new Lazy<IDictionary<string, string>>(() =>
+        {
+            var vsInstance = VisualStudioLocator.QueryVisualStudioInstances().OrderBy(vs => vs.Version).LastOrDefault();
+            return vsInstance == null ? null :
+                new Dictionary<string, string>
+                {
+                    ["MSBuildExtensionsPath"] = Path.Combine(vsInstance.VisualStudioRootPath, "MSBuild"),
+                    ["MSBuildExtensionsPath32"] = Path.Combine(vsInstance.VisualStudioRootPath, "MSBuild"),
+                    ["MSBuildExtensionsPath64"] = @"C:\Program Files\MSBuild"
+                };
+        });
+
+        private static bool IsNetCoreProject(FileInfo projectPath)
+        {
+            // I would have expected ProjectRootElement to handle this, but in testing it doesn't extract a single property.
+            var projXml = XDocument.Load(projectPath.FullName);
+            var targetFramework =
+                projXml.Descendants("TargetFramework").FirstOrDefault() ??
+                projXml.Descendants("TargetFrameworks").FirstOrDefault() ??
+                projXml.Descendants("TargetFrameworkVersion").FirstOrDefault();
+            return (targetFramework?.Value?.Contains("core")).GetValueOrDefault();
+        }
+
+        #endregion
     }
 
-    
+
 }
