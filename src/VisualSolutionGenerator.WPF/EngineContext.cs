@@ -24,7 +24,7 @@ namespace VisualSolutionGenerator
 
         #region properties
 
-        public IEnumerable<FileProjectInfo> Projects => _Projects == null ? Enumerable.Empty<FileProjectInfo>() : _Projects.ProjectFiles.ToList();
+        public IReadOnlyList<FileProjectInfo> Projects => _GetProjects();
 
         public IEnumerable<FileErrorInfo> FailedFiles => _Projects == null ? Enumerable.Empty<FileErrorInfo>() : _Projects.FailedFiles.ToList();
 
@@ -39,6 +39,16 @@ namespace VisualSolutionGenerator
         #endregion
 
         #region API
+
+        private IReadOnlyList<FileProjectInfo> _GetProjects()
+        {
+            if (_Projects == null) return Array.Empty<FileProjectInfo>();            
+
+            return _Projects
+                .ProjectFiles
+                .OrderBy(item => item.AssemblyName)
+                .ToList();
+        }
 
         public void ProcessCommandLine(CommandLineParser args)
         {
