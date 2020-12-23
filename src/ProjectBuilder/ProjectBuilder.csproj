@@ -20,9 +20,9 @@
       These are intentionally not the most up-to-date version of the MSBuild packages to show that they're
       only used to compile against and that the runtime assemblies used are chosen by MSBuildLocator.
     -->
-    <PackageReference Include="Microsoft.Build" Version="16.7.0" ExcludeAssets="Runtime" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.7.0" ExcludeAssets="Runtime" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
+    <PackageReference Include="Microsoft.Build" Version="16.8.0" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.8.0" ExcludeAssets="Runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.3.2" />
   </ItemGroup>  
 
 </Project>
