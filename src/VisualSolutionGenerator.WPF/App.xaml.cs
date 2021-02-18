@@ -12,7 +12,12 @@ namespace VisualSolutionGenerator
         [STAThread]
         public static void Main()
         {
-            Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();
+            var instance = Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();
+
+            var traceLine = $"Using MSBuild from {instance.MSBuildPath}";
+
+            Console.WriteLine(traceLine);
+            System.Diagnostics.Trace.WriteLine(traceLine);
 
             _ProcessSolutionGenFile();
 

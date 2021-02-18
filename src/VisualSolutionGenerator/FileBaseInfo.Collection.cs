@@ -5,9 +5,6 @@ using System.Text;
 
 namespace VisualSolutionGenerator
 {
-    using MSPROJECT = Microsoft.Build.Evaluation.Project;
-    using MSPRJCOLLECTION = Microsoft.Build.Evaluation.ProjectCollection;
-
     partial class FileBaseInfo
     {
         public sealed class Collection

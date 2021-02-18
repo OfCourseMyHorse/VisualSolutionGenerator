@@ -1,8 +1,9 @@
-﻿using Microsoft.VisualStudio.Setup.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+
+using Microsoft.VisualStudio.Setup.Configuration;
 
 namespace VisualSolutionGenerator
 {
@@ -15,6 +16,8 @@ namespace VisualSolutionGenerator
         /// <summary>Query for all installed Visual Studio instances.</summary>
         public static IEnumerable<VisualStudioInstallation> QueryVisualStudioInstances()
         {
+            return Enumerable.Empty<VisualStudioInstallation>();
+
             const string MSBuild = "Microsoft.Component.MSBuild";
 
             var validInstances = new List<VisualStudioInstallation>();
@@ -65,19 +68,5 @@ namespace VisualSolutionGenerator
 
         [DllImport("Microsoft.VisualStudio.Setup.Configuration.Native.dll")]
         private static extern int GetSetupConfiguration([Out, MarshalAs(UnmanagedType.Interface)] out ISetupConfiguration configuration, IntPtr reserved);
-    }
-
-    public class VisualStudioInstallation
-    {
-        internal VisualStudioInstallation(string name, string path, Version version)
-        {
-            Name = name;
-            Version = version;
-            VisualStudioRootPath = path;
-        }
-
-        public string Name { get; }
-        public Version Version { get; }
-        public string VisualStudioRootPath { get; }
-    }
+    }    
 }

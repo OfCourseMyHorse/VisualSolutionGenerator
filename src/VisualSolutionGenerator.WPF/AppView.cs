@@ -178,7 +178,7 @@ namespace VisualSolutionGenerator
 
             using (var dlg = new System.Windows.Forms.FolderBrowserDialog())
             {
-                dlg.UseDescriptionForTitle = !string.IsNullOrWhiteSpace(description);
+                // dlg.UseDescriptionForTitle = !string.IsNullOrWhiteSpace(description);
                 dlg.Description = description; // "Select root directory to begin scanning for projects."
                 if (dlg.ShowDialog() != System.Windows.Forms.DialogResult.OK) return null;
 
