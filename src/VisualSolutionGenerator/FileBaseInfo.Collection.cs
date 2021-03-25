@@ -143,11 +143,22 @@ namespace VisualSolutionGenerator
 
             #region export DGML
 
-            public OpenSoftware.DgmlTools.Model.DirectedGraph ToDGML()
+            public OpenSoftware.DgmlTools.Model.DirectedGraph ToDGML(bool excludeUnitTests = true)
             {
                 // https://github.com/merijndejonge/DgmlBuilder        
 
-                var projects = ProjectFiles.Where(item => item != null).ToList();
+                bool _projectFilter(FileProjectInfo.View pv)
+                {
+                    if (pv == null) return false;
+
+                    if (excludeUnitTests && pv.AssemblyType.HasFlag(AssemblyType.UnitTest)) return false;
+
+                    return true;
+                }
+
+                var projects = ProjectFiles
+                    .Where(_projectFilter)
+                    .ToList();
 
                 var linkPairs = projects
                     .SelectMany(item => item.TransitiveProjectReferences.Select(iref => new KeyValuePair<FileProjectInfo, FileBaseInfo>(item, iref)))

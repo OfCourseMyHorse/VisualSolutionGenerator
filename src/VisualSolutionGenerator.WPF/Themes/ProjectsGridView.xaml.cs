@@ -24,9 +24,20 @@ namespace VisualSolutionGenerator.Themes
 
         private void _Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            var link = e.OriginalSource as Hyperlink; if (link == null) return;
+            try
+            {
+                var link = e.OriginalSource as Hyperlink; if (link == null) return;
 
-            System.Diagnostics.Process.Start(link.NavigateUri.AbsoluteUri);
+                var path = link.NavigateUri.AbsoluteUri.Replace("file:///", string.Empty) + "/";
+
+                path = path.Replace("/", "\\");
+
+                System.Diagnostics.Process.Start(path);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

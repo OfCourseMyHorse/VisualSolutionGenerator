@@ -9,21 +9,22 @@ using System.Windows.Input;
 
 namespace VisualSolutionGenerator
 {
-    class AppView : BindableBase
+    class AppView : Prism.Mvvm.BindableBase
     {
         #region lifecycle
 
         public AppView()
         {
-            IncludeDirectoryTreeCmd = new RelayCommand(_SelectDirectoryTree);
-            IncludeSingleProjectCmd = new RelayCommand(_SelectSingleProjectPath);
+            IncludeDirectoryTreeCmd = new Prism.Commands.DelegateCommand(_SelectDirectoryTree);
+            IncludeSingleProjectCmd = new Prism.Commands.DelegateCommand(_SelectSingleProjectPath);
 
-            SaveSolutionCmd = new RelayCommand(_Engine.SaveSolution);
-            SaveSolutionAsCmd = new RelayCommand(_SetTargetSolutionPath);
-            SaveDgmlCmd = new RelayCommand(_SaveDgmlFile);
-            SaveMetricsCmd = new RelayCommand(_SaveMetrics);
+            SaveSolutionCmd = new Prism.Commands.DelegateCommand(_Engine.SaveSolution);
+            SaveSolutionAsCmd = new Prism.Commands.DelegateCommand(_SetTargetSolutionPath);
+            SaveDgmlCmd = new Prism.Commands.DelegateCommand(_SaveDgmlFile);
+            SaveProjectPathPropsCmd = new Prism.Commands.DelegateCommand(_SaveProjectPathPropsFile);
+            SaveMetricsCmd = new Prism.Commands.DelegateCommand(_SaveMetrics);
 
-            RegisterFileAssociationCmd = new RelayCommand(_RegisterExtensions);
+            RegisterFileAssociationCmd = new Prism.Commands.DelegateCommand(_RegisterExtensions);
 
             _Engine.ProcessCommandLine(CommandLineParser.Default);
         }
@@ -46,6 +47,7 @@ namespace VisualSolutionGenerator
         public ICommand SaveSolutionCmd { get; private set; }
         public ICommand SaveSolutionAsCmd { get; private set; }
         public ICommand SaveDgmlCmd { get; private set; }
+        public ICommand SaveProjectPathPropsCmd { get; private set; }
         public ICommand SaveMetricsCmd { get; private set; }
 
         public ICommand RegisterFileAssociationCmd { get; private set; }
@@ -113,6 +115,21 @@ namespace VisualSolutionGenerator
             if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;
 
             _Engine.SaveDgml(dlg.FileName);
+        }
+
+        private void _SaveProjectPathPropsFile()
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "csproj paths|*.props",
+
+                FileName = System.IO.Path.ChangeExtension(_Engine.SolutionPath, ".props")
+            };
+
+            if (!dlg.ShowDialog(System.Windows.Application.Current.MainWindow).Value) return;
+
+            _Engine.SaveProps(dlg.FileName);
         }
 
         private void _SaveMetrics()

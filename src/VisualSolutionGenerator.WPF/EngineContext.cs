@@ -6,7 +6,7 @@ using System.Xml.XPath;
 
 namespace VisualSolutionGenerator
 {
-    sealed class EngineContext : BindableBase
+    sealed class EngineContext : Prism.Mvvm.BindableBase
     {
         #region data
 
@@ -31,10 +31,10 @@ namespace VisualSolutionGenerator
         public string SolutionPath
         {
             get => _SolutionSavePath;
-            set { _SolutionSavePath = value; RaiseChanged(nameof(SolutionPath), nameof(DisplayTitle)); }
+            set { _SolutionSavePath = value; RaisePropertyChanged(nameof(SolutionPath)); RaisePropertyChanged(nameof(DisplayTitle)); }
         }
 
-        public string DisplayTitle => _SolutionSavePath != null ? _SolutionSavePath : SolutionConstants.GetSemanticVersion();
+        public string DisplayTitle => _SolutionSavePath != null ? _SolutionSavePath : Solutions.Constants.GetSemanticVersion();
 
         #endregion
 
@@ -82,7 +82,8 @@ namespace VisualSolutionGenerator
                 }
             }
 
-            RaiseChanged(nameof(Projects), nameof(FailedFiles));
+            RaisePropertyChanged(nameof(Projects));
+            RaisePropertyChanged(nameof(FailedFiles));
         }
 
         public void AddDirectoryTree(string directoryPath, IEnumerable<string> excludePrjs, IEnumerable<string> excludeDirs)
@@ -111,12 +112,18 @@ namespace VisualSolutionGenerator
 
             _Projects.ProbeFolder(directoryPath, excludePrjs, excludeDirs, true);
 
-            RaiseChanged(nameof(Projects), nameof(FailedFiles));
+            RaisePropertyChanged(nameof(Projects));
+            RaisePropertyChanged(nameof(FailedFiles));
         }
 
         public void SaveSolution()
         {
-           SolutionBuilder2017.WriteSolutionFile(SolutionPath, _Projects);
+           Solutions.SolutionBuilder2017.WriteSolutionFile(SolutionPath, _Projects);
+        }
+
+        public void SaveProps(string filePath)
+        {
+            Solutions.PropsPathsBuilder.WritePropsFile(filePath, _Projects);
         }
 
         public void SaveDgml(string filePath)

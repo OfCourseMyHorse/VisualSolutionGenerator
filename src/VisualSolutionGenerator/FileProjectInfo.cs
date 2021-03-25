@@ -58,7 +58,15 @@ using MSEXEPROJECT = Microsoft.Build.Execution.ProjectInstance;
 namespace VisualSolutionGenerator
 {
     [Flags]
-    public enum AssemblyType { None = 0, Library = 1, Exe = 2, AppContainer = 4, Win = 8 }
+    public enum AssemblyType
+    {
+        None = 0,
+        Library = 1,
+        Exe = 2,
+        AppContainer = 4,
+        Win = 8,
+        UnitTest = 16
+    }
 
     public sealed class SolutionGenerationHints
     {
@@ -128,7 +136,7 @@ namespace VisualSolutionGenerator
             return _Path.ToLower().GetHashCode();
         }
 
-        public static bool Equals(ProjectReference a, ProjectReference b)
+        public static bool AreEqual(ProjectReference a, ProjectReference b)
         {
             #pragma warning disable IDE0041 // Use 'is null' check
             if (object.ReferenceEquals(a, b)) return true;
@@ -141,12 +149,12 @@ namespace VisualSolutionGenerator
             return string.Equals(a._Path, b._Path, StringComparison.OrdinalIgnoreCase);
         }
 
-        public bool Equals(ProjectReference other) => Equals(this, other);
+        public bool Equals(ProjectReference other) => AreEqual(this, other);
 
-        public override bool Equals(object obj) => Equals(this, obj as ProjectReference);
+        public override bool Equals(object obj) => AreEqual(this, obj as ProjectReference);
 
-        public static bool operator ==(ProjectReference a, ProjectReference b) => Equals(a, b);
-        public static bool operator !=(ProjectReference a, ProjectReference b) => !Equals(a, b);
+        public static bool operator ==(ProjectReference a, ProjectReference b) => AreEqual(a, b);
+        public static bool operator !=(ProjectReference a, ProjectReference b) => !AreEqual(a, b);
 
         #endregion
     }    
@@ -255,6 +263,7 @@ namespace VisualSolutionGenerator
         #region properties - project core                
 
         public String       AssemblyName    =>  _Project.GetPropertyValue("AssemblyName");
+
         public AssemblyType AssemblyType    => _Project.GetAssemblyType();
 
         public String OutputType            =>  _Project.GetPropertyValue("OutputType");
@@ -263,7 +272,7 @@ namespace VisualSolutionGenerator
 
         public String TargetFrameworks      => String.Join(" ", _Project.GetTargetFrameworkMonikers());
 
-        public IEnumerable<PackageInfo> PackageReferences => this._Project.AllEvaluatedItems.Where(item => item.ItemType == PACKAGEREFERENCE).Select(item => new PackageInfo(item.EvaluatedInclude, item.GetMetadataValue("Version"))).ToList();
+        public IReadOnlyList<PackageInfo> PackageReferences => _GetPackageReferences().ToList();
 
         #endregion        
 
@@ -276,13 +285,31 @@ namespace VisualSolutionGenerator
 
         public System.Xml.Linq.XDocument    FileContent     => System.Xml.Linq.XDocument.Load(this.FilePath);
 
-        public IEnumerable<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile").ToList();        
+        public IReadOnlyList<Microsoft.Build.Evaluation.ProjectItem> ItemsToCompile => _Project.GetItems("Compile").ToList();
 
-        #endregion        
+        #endregion
+
+        #region API
+
+        private IEnumerable<PackageInfo> _GetPackageReferences()
+        {
+            return this._Project
+                .AllEvaluatedItems
+                .Where(item => item.ItemType == PACKAGEREFERENCE)
+                .Select(item => new PackageInfo(item.EvaluatedInclude, item.GetMetadataValue("Version")));
+        }
+
+        #endregion
     }
-    
+
+    /// <summary>
+    /// Represents additional project information.
+    /// </summary>
+    /// <remarks>
+    /// Created by <see cref="FileProjectInfo.Analysis"/>.
+    /// </remarks>
     [System.Diagnostics.DebuggerDisplay("{FilePath}")]
-    public sealed class ProjectAnalysis : BindableBase
+    public sealed class ProjectAnalysis : Prism.Mvvm.BindableBase
     {
         #region lifecycle
 
@@ -304,11 +331,11 @@ namespace VisualSolutionGenerator
 
         #region properties
 
-        public bool ShowPropertiesEnvironment { get => _ShowPropertiesEnvironment; set { _ShowPropertiesEnvironment = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesGlobal { get => _ShowPropertiesGlobal; set { _ShowPropertiesGlobal = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesReserved { get => _ShowPropertiesReserved; set { _ShowPropertiesReserved = value; RaiseChanged(nameof(Properties)); } }
-        public bool ShowPropertiesInported { get => _ShowPropertiesInported; set { _ShowPropertiesInported = value; RaiseChanged(nameof(Properties)); } }
-        public string ShowPropertiesContaining { get => _ShowPropertiesContaining; set { _ShowPropertiesContaining = value; RaiseChanged(nameof(Properties)); } }        
+        public bool ShowPropertiesEnvironment { get => _ShowPropertiesEnvironment; set { _ShowPropertiesEnvironment = value; RaisePropertyChanged(nameof(Properties)); } }
+        public bool ShowPropertiesGlobal { get => _ShowPropertiesGlobal; set { _ShowPropertiesGlobal = value; RaisePropertyChanged(nameof(Properties)); } }
+        public bool ShowPropertiesReserved { get => _ShowPropertiesReserved; set { _ShowPropertiesReserved = value; RaisePropertyChanged(nameof(Properties)); } }
+        public bool ShowPropertiesInported { get => _ShowPropertiesInported; set { _ShowPropertiesInported = value; RaisePropertyChanged(nameof(Properties)); } }
+        public string ShowPropertiesContaining { get => _ShowPropertiesContaining; set { _ShowPropertiesContaining = value; RaisePropertyChanged(nameof(Properties)); } }        
 
         public IEnumerable<(string Name, string Unevaluated, string Evaluated)> Properties
         {

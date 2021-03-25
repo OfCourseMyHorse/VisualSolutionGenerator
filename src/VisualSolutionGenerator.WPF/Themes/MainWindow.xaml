@@ -15,6 +15,7 @@
                 <Separator />
                 <MenuItem Header="Save Solution" Command="{Binding SaveSolutionCmd}" />
                 <MenuItem Header="Save Solution As..." Command="{Binding SaveSolutionAsCmd}" />
+                <MenuItem Header="Save Project Paths As..." Command="{Binding SaveProjectPathPropsCmd}" />
                 <MenuItem Header="Save DGML Graph..." Command="{Binding SaveDgmlCmd}" />
                 <MenuItem Header="Save Metrics..." Command="{Binding SaveMetricsCmd}" />
             </MenuItem>

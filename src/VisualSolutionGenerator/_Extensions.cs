@@ -32,7 +32,7 @@ namespace VisualSolutionGenerator
                 .ToArray();
         }
 
-        public static IEnumerable<String> GetPackagesReferencesRelativePaths(this MSEVLPROJECT proj)
+        public static IEnumerable<String> GetPackagesReferences(this MSEVLPROJECT proj)
         {
             return proj
                 .AllEvaluatedItems
@@ -80,6 +80,10 @@ namespace VisualSolutionGenerator
 
             if ( outt == "winexe") t |= AssemblyType.Win;
             if ( outt == "appcontainerexe") t |= AssemblyType.AppContainer;
+
+            var packageReferences = proj.GetPackagesReferences().ToList();
+
+            if (packageReferences.Contains("Microsoft.NET.Test.Sdk")) t |= AssemblyType.UnitTest;            
 
             // wix uses "package"
             // http://stackoverflow.com/questions/15555849/visual-studio-project-file-specify-multiple-import
