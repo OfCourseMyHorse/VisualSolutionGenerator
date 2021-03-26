@@ -19,7 +19,7 @@ namespace VisualSolutionGenerator.Solutions
             using (var writer = new StringWriter())
             {
                 writer.WriteLine();
-                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf - 8\"?>");
+                writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 writer.WriteLine("<Project xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" DefaultTargets=\"Build\" ToolsVersion=\"4.0\">");
                 
                 writer.WriteLine();
