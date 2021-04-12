@@ -17,8 +17,7 @@ namespace VisualSolutionGenerator.Solutions
             if (validProjectFiles.Length == 0) return;            
 
             using (var writer = new StringWriter())
-            {
-                writer.WriteLine();
+            {                
                 writer.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 writer.WriteLine("<Project xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" DefaultTargets=\"Build\" ToolsVersion=\"4.0\">");
                 
@@ -28,7 +27,7 @@ namespace VisualSolutionGenerator.Solutions
 
                 writer.WriteLine("  <PropertyGroup>");
 
-                foreach (var p in validProjectFiles)
+                foreach (var p in validProjectFiles.OrderBy(item=>item.FilePath))
                 {
                     _WriteProjectEntry(writer, p, Path.GetDirectoryName(propsFile));
                 }
