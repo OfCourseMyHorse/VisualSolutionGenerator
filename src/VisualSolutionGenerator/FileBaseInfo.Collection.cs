@@ -120,6 +120,12 @@ namespace VisualSolutionGenerator
 
             public void ProbeFolder(System.IO.DirectoryInfo folder, IEnumerable<string> excludeProjs, IEnumerable<System.IO.DirectoryInfo> excludeDirs, bool recursive = false)
             {
+                if (folder == null) return;
+                if (folder.GetLinkTarget() != null)
+                {
+                    folder = new System.IO.DirectoryInfo(folder.GetLinkTarget());
+                }
+
                 if (!folder.Exists) return;                
 
                 if (excludeDirs != null && excludeDirs.Any(exdir => exdir.FullName == folder.FullName)) return;

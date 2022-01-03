@@ -18,7 +18,7 @@ namespace VisualSolutionGenerator
     // Accessing Project Type Specific Project, Project Item, and Configuration Properties
     // https://msdn.microsoft.com/en-us/library/ms228958.aspx
 
-    static class _Extensions
+    static partial class _Extensions
     {
         private const string CSPROJCUSTOMPROP_VIRTUALFOLDERHINT = "SlnGenVirtualFolderHint";
 

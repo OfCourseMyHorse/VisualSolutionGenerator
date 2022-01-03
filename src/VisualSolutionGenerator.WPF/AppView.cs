@@ -24,7 +24,7 @@ namespace VisualSolutionGenerator
             SaveProjectPathPropsCmd = new Prism.Commands.DelegateCommand(_SaveProjectPathPropsFile);
             SaveMetricsCmd = new Prism.Commands.DelegateCommand(_SaveMetrics);
 
-            RegisterFileAssociationCmd = new Prism.Commands.DelegateCommand(_RegisterExtensions);
+            RegisterFileAssociationCmd = new Prism.Commands.DelegateCommand(async ()=> await _RegisterExtensionsAsync());
 
             _Engine.ProcessCommandLine(CommandLineParser.Default);
         }
@@ -166,7 +166,7 @@ namespace VisualSolutionGenerator
             }
         }
 
-        private void _RegisterExtensions()
+        private async Task _RegisterExtensionsAsync()
         {
             // https://stackoverflow.com/questions/29847034/how-to-show-set-program-associations-window-in-windows-8-8-1
 
@@ -185,7 +185,7 @@ namespace VisualSolutionGenerator
             if (!appRegSrc.IsApplicationRegistered(applicationInfo)) appRegSrc.RegisterApplication(applicationInfo);            
 
             // register extension
-            extRegSrc.AssociateFilesWithApplication(applicationInfo.Name);
+            await extRegSrc.AssociateFilesWithApplicationAsync(applicationInfo);
         }
 
 
