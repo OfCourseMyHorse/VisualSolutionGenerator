@@ -170,8 +170,13 @@ namespace VisualSolutionGenerator
         {
             // https://stackoverflow.com/questions/29847034/how-to-show-set-program-associations-window-in-windows-8-8-1
 
+            var serviceLocator = Catel.IoC.ServiceLocator.Default;
+            var _fileService = serviceLocator.ResolveType(typeof(Orc.FileSystem.IFileService)) as Orc.FileSystem.IFileService;
+            var _directoryService = serviceLocator.ResolveType(typeof(Orc.FileSystem.IDirectoryService)) as Orc.FileSystem.IDirectoryService;
+            var _languageService = serviceLocator.ResolveType(typeof(Catel.Services.ILanguageService)) as Catel.Services.ILanguageService;
+
             var appRegSrc = new Orc.FileAssociation.ApplicationRegistrationService() as Orc.FileAssociation.IApplicationRegistrationService;
-            var extRegSrc = new Orc.FileAssociation.FileAssociationService() as Orc.FileAssociation.IFileAssociationService;
+            var extRegSrc = new Orc.FileAssociation.FileAssociationService(_fileService,_directoryService,_languageService) as Orc.FileAssociation.IFileAssociationService;
 
             // register application
             var assembly = Catel.Reflection.AssemblyHelper.GetEntryAssembly();
