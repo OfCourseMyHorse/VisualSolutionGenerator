@@ -15,8 +15,8 @@
   <!-- https://github.com/dotnet/sdk/issues/2203 -->
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="17.3.2" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.3.2" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build" Version="17.4.0" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.4.0" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
     <PackageReference Include="OpenSoftware.DgmlBuilder" Version="2.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />    
