@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualSolutionGenerator", "VisualSolutionGenerator\VisualSolutionGenerator.csproj", "{20A2F056-91BD-4FEF-929F-C68F96181947}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualSolutionGenerator.WPF", "VisualSolutionGenerator.WPF\VisualSolutionGenerator.WPF.csproj", "{C174CFD6-B9BA-4BF1-93A2-A6384E5E306C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualSolutionGenerator.WPF", "VisualSolutionGenerator.WPF\VisualSolutionGenerator.WPF.csproj", "{C174CFD6-B9BA-4BF1-93A2-A6384E5E306C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualSolutionGenerator.Tests", "VisualSolutionGenerator.Tests\VisualSolutionGenerator.Tests.csproj", "{6E962F4F-00CC-4D73-9312-3C4B47EEFCC7}"
 EndProject
@@ -15,7 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildAssemblies.WithEnviron
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildAssemblies.WithLocator.Test", "..\tests\BuildAssemblies.WithLocator.Test\BuildAssemblies.WithLocator.Test.csproj", "{3B210745-CC87-41B7-BB10-87627FB9A1D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectBuilder", "ProjectBuilder\ProjectBuilder.csproj", "{F34781ED-5317-4F08-B6A0-25E7840EFFDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectBuilder", "ProjectBuilder\ProjectBuilder.csproj", "{F34781ED-5317-4F08-B6A0-25E7840EFFDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{882CBB4C-8314-4794-816D-EEB20299C425}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
