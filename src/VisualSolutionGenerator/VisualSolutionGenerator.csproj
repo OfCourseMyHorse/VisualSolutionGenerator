@@ -15,15 +15,15 @@
   <!-- https://github.com/dotnet/sdk/issues/2203 -->
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="17.4.0" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.4.0" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
+    <PackageReference Include="Microsoft.Build" Version="17.8.3" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.8.3" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.6.10" />
     <PackageReference Include="OpenSoftware.DgmlBuilder" Version="2.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />    
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">    
-    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.4.2244" />
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="3.8.2112" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'net7.0' ">
