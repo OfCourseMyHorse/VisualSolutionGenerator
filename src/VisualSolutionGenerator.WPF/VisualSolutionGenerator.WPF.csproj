@@ -9,7 +9,7 @@
     <AssemblyName>VisualSolutionGenerator.WPF</AssemblyName>
     <StartupObject>VisualSolutionGenerator.AppEntryPoint</StartupObject>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>1.0.2-Alpha</Version>
+    <Version>1.0.3-Alpha</Version>
   </PropertyGroup>
 
   <!--

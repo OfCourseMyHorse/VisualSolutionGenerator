@@ -151,7 +151,7 @@ namespace VisualSolutionGenerator
 
             public OpenSoftware.DgmlTools.Model.DirectedGraph ToDGML(bool excludeUnitTests = true)
             {
-                // https://github.com/merijndejonge/DgmlBuilder        
+                // https://github.com/merijndejonge/DgmlBuilder
 
                 bool _projectFilter(FileProjectInfo.View pv)
                 {
@@ -227,8 +227,8 @@ namespace VisualSolutionGenerator
                 {
                     NodeBuilders = new OpenSoftware.DgmlTools.Builders.NodeBuilder[] { prjBuilder,errBuilder , groupBuilder },
                     LinkBuilders = new OpenSoftware.DgmlTools.Builders.LinkBuilder[] { linkBuilder, groupItemBuilder },
-                    CategoryBuilders = new OpenSoftware.DgmlTools.Builders.CategoryBuilder[] { },
-                    StyleBuilders = new OpenSoftware.DgmlTools.Builders.StyleBuilder[] { }
+                    CategoryBuilders = Array.Empty<OpenSoftware.DgmlTools.Builders.CategoryBuilder>(),
+                    StyleBuilders = Array.Empty<OpenSoftware.DgmlTools.Builders.StyleBuilder>()
                 };
 
                 return builder.Build(groups, projects, linkPairs);

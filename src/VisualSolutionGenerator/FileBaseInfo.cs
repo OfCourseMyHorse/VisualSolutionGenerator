@@ -54,7 +54,7 @@ namespace VisualSolutionGenerator
 
         public abstract String FilePath { get; }
 
-        public override int GetHashCode() { var f = FilePath; return f == null ? 0 : f.ToLower().GetHashCode(); }        
+        public override int GetHashCode() { return FilePath?.GetHashCode(StringComparison.OrdinalIgnoreCase) ?? 0; }        
 
         public static bool AreEqual(FileBaseInfo a, FileBaseInfo b)
         {
