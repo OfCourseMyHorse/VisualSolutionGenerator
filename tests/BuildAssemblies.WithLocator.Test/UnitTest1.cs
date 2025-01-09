@@ -17,7 +17,7 @@ namespace Tests
         public void Test1()
         {
             Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();
-            Assert.IsTrue(Microsoft.Build.Locator.MSBuildLocator.IsRegistered);
+            Assert.That(Microsoft.Build.Locator.MSBuildLocator.IsRegistered);
 
             var prj1 = Builder.LoadProject(Project1Path);
             var prj2 = Builder.LoadProject(Project2Path);

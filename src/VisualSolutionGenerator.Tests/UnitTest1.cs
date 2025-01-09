@@ -12,7 +12,7 @@ namespace Tests
             if (!Microsoft.Build.Locator.MSBuildLocator.IsRegistered)
             {
                 Microsoft.Build.Locator.MSBuildLocator.RegisterDefaults();
-                Assert.IsTrue(Microsoft.Build.Locator.MSBuildLocator.IsRegistered);
+                Assert.That(Microsoft.Build.Locator.MSBuildLocator.IsRegistered);
             }            
         }        
 
@@ -36,7 +36,7 @@ namespace Tests
                 TestContext.WriteLine($"{f.FileName} {f.ErrorMessage}");
             }
 
-            Assert.AreEqual(0, projects.FailedFiles.Count());
+            Assert.That(projects.FailedFiles, Has.Count.Empty);
         }
     }
 }
