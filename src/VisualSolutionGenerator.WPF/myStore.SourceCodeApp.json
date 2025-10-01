@@ -1,6 +1,10 @@
 {
-  "Title": "Visual Solution Generator",
   "ExecutablePath": "bin/publish/VisualSolutionGenerator.WPF.exe",
-  "ProjectPath": "VisualSolutionGenerator.WPF.csproj",
+  "Repository": {
+    "ProjectPath": "VisualSolutionGenerator.WPF.csproj"
+  },
+  "BuildScriptPath": null,
+  "ProjectPath": null,
+  "Title": "Visual Solution Generator",
   "Description": "Application used to view Visual Studio Project dependencies"
 }
