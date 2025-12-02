@@ -87,7 +87,10 @@ namespace VisualSolutionGenerator
 
         private static readonly Lazy<IDictionary<string, string>> NetFrameworkProperties = new Lazy<IDictionary<string, string>>(() =>
         {
-            var vsInstance = VisualStudioLocator.QueryVisualStudioInstances()
+            
+
+            var vsInstance = Microsoft.Build.Locator.MSBuildLocator
+                .QueryVisualStudioInstances()
                 .OrderByDescending(vs => vs.Version)
                 .FirstOrDefault();
 

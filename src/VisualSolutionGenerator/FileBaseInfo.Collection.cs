@@ -121,9 +121,9 @@ namespace VisualSolutionGenerator
             public void ProbeFolder(System.IO.DirectoryInfo folder, IEnumerable<string> excludeProjs, IEnumerable<System.IO.DirectoryInfo> excludeDirs, bool recursive = false)
             {
                 if (folder == null) return;
-                if (folder.GetLinkTarget() != null)
+                if (folder.LinkTarget != null)
                 {
-                    folder = new System.IO.DirectoryInfo(folder.GetLinkTarget());
+                    folder = new System.IO.DirectoryInfo(folder.LinkTarget);
                 }
 
                 if (!folder.Exists) return;                
